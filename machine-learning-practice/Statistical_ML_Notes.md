@@ -8,15 +8,15 @@ Data mining is useful because it has the power to turn raw/ transactional data i
 
 Modern science and tech generates massive amounts of data very quickly - this makes it difficult to analyse manually 
 
-Examples of large data sources:
+**Examples of large data sources:**
 1. Genome data: DNA sequencing produces extremely large datasets 
 2. Protein data: Used in bioinformatics to study protein structures and functions. 
 3. Astronomical data: Telescopes generate huge image datasets of space. 
 4. Digital data: Emails, youtube and other online content also produce large datasets. 
 
-Problem - traditional methods like statistical or manual analysis techniques cannot handle raw, extremely large datasets. 
+**Problem** - traditional methods like statistical or manual analysis techniques cannot handle raw, extremely large datasets. 
 
-Why cant they handle large datasets? 
+**Why cant they handle large datasets?**
 
 1. Enormity of data - the sheer volume of the data is too much 
 2. High dimensionality - Data can have many variables / features 
@@ -28,12 +28,219 @@ Data mining is a field withing computer science focused on **discovering useful 
 
 The term data mining can be a bit misleading the goal is **not to extract the data itself** but to extract **meaningful patterns, relationship and knowledge from the data.**
 
-To summarise: Data mining focuses on discovering patterns and useful knowledge **from large datasets using computational statistical techniques**
+**To summarise:** Data mining focuses on discovering patterns and useful knowledge **from large datasets using computational statistical techniques**
 
 The term **Data mining** became popular because of marketing. Even though most of data mining techniques are already present in traditional Machine learning and statistical analysis. There was a well known book that was mainly about machine learning techniques that used the word **Data mining** in the title mainly to attract attention. 
 
-Data mining mainly refers to **large scale data analysis** using techniques from *machine learning, *Artificial intelligence and *Statistics
+Data mining mainly refers to **large scale data analysis** using techniques from **machine learning, Artificial intelligence and Statistics**
 
 **Data Mining** = broader term used in industry for analystics + machine learning applied to large datasets
 
 # Pattern Recognition 
+It is the automatic recognition of patterns and regular structures in large amounts of data. Used in statistical analysis and ML specially in tasks where the systems should detect structure - such as classification, clustering and image recognition. 
+
+It was originally developed from statistics and engineering but modern techniques heavily use machine learning. Pattern recognition can depend on whether: 
+1. labels are available - supervised learning
+2. labels are not available - unsupervised learning 
+3. approach is statistical - probability based models
+4. approach is non - statistical - rule based heiristic methods 
+
+**Key takeaway** - pattern recognition is about automatically detecting patterns in data often using ML and statistical techniques and can involve supervised and unsupervised techniques. 
+
+# Machine Learning 
+Machine learning is a subfield of **Computer science and artificial intelligence** focused on developing algorithms that **learn patterns from data and improve performance automatically without explicit programming** 
+
+ML was developed from **pattern recognition and computational learning theory** and is closely connected to **computational ststistics** since many ML algorithms rely on ststistical methods implemented on computers. 
+
+ML and pattern recognition both focus on finding patterns and making predictions from data. 
+
+# Main categories of ML 
+1. Supervised learning: learning from labeled data. 
+2. Unsupervised learning: discovering structure in unlabeled data. 
+3. Reinforcement learning: learning through interaction and feedback from the environment
+
+**Key Takeaway**: ML focuses on algorithms that learn patterns from data, combining ideas from AI, statistics, and pattern recognition and is commonly divifed into supervised, unsupervised and reinforcment learning. 
+
+# Relationship between **Data Mining** and **Machine Learning**
+
+Both are closely related and use the same algorithms hence can be confused between one anther - 
+**ML mainly focuses on prediction** - learning from training data to predict future outcomes.
+**Data Mining** - mainly focuses on **discovering previously unknown patterns or relationships in large datasets** 
+
+**The overlap** - Data mining frequently uses ML algorithms to discover patterns in data. 
+
+ML can also use data mining techniques - mostly 1. Unsupervised learning and 2. Data preprocessing (finding patterns or structure in data befor training the models)
+
+**Key Takeaway** - ML is **prediction focused** and Data mining is **discovery focused** - both fields share many methods and strongly overlap. 
+
+# Statistical Machine Learning
+
+These notes are on **statistical ML** which lies between **data mining, machine learning and classical statistics** but is not the same as any of them. 
+
+**Why not purely data mining or machine learning**
+1. Data mining - is a very broad field covering many types of large scale data analysis. 
+2. Machine learning - often focuses more on prediction accuracy and large scale applications. 
+3. Classical multivariate statistics - includes traditional statictical techniques but does not cover modern computational methods
+
+Statistical ML - combines ststictics with computational methods from Computer science, optimization and systems science. 
+
+**Main focus of statistical ML** 
+1. Building statistical models 
+2. Understanding model interpretability
+3. Measuring precision and uncertainty in predictions 
+
+Statistical ML integrates statistical modeling with computational algorithms, focusing not only on prediction but also on understanding models, uncertainty and interpretability. 
+
+# Data Science 
+
+Data science is a broad interdisciplinary field focused on extracting useful knowledge and insights from data (structured and unstructured). 
+
+**Goal of data science** 
+The aim is to analyse real - world data to understand phenomena and support decision making using scientific methods and computational tools. 
+
+Data science brings together several areas: 
+1. Statistics and mathematics (for modeling and inference)
+2. Computer science (for algorithms and computation)
+3. Data analysis and machine learning
+4. Domain knowledge or business expertise 
+
+Data science integrates statistics, computing and domain knowledge to analyse large datasets and extract actionable insights from real-world data. 
+
+The **Two cultures** concept in the use of statisical modeling to reach conclusions from data. 
+
+As mentioned in **Leo Breiman Statistical Modeling : The two cultures** There are 2 cultures : Data modeling and ALgorithmic modeling 
+1. Data modeling : assumes that the data is generated by  a given stochastic data model 
+2. Algorithmic modeling : assumes the use of algorithmic modeling while treating the data as unknown. 
+
+If the goal is to use data to solve problems we need to move away from exclusive dependence on data models and adopt a more diverse set of tools. 
+
+# Supervised Machine Learning
+In Supervised learning the dataset contains **input variables (X)** and **known output / response (Y)**. The goal is to **learn a relationship between X and Y** so that we can predict Y for new data. 
+
+**Two main types of supervised learning problems:** 
+1. Regression: The response variable Y is continuous (numerical). Examples: predicting house prices or blood pressure 
+
+2. Classification: The response variable Y is categorical (labels or classes)
+Examples: predicting survived /died or recognizing digitd 0 - 9 
+
+**Common regression methods**
+Linear regression, non linear regression, and model selection techniques
+
+**Common classification methods** 
+Logistic regression, discriminant analysis, and support vector machine
+
+**Other important supervised methods**
+Tree-based models and ensemble methods such as bagging, boosting and random forests. 
+
+**Key takeaway** - Supervised learning learns a mapping from inputs (X) to known outputs (Y) and mainly involves regression (continuous Y) and classification (categorical Y) problems. 
+
+# Unsupervised Learning 
+
+In Unsupervised learning there is no response/output variable (Y). We **only observe input features (X)** and try to discover hidden structures or patterns in the data. 
+
+**Goal of unsupervised learning** 
+Since there are no labels the objective is less clearly defined. 
+Typical goals include: 
+1. Clustering - finding groups of similar observations 
+2. Finding relationships between variables 
+3. Finding **low dimensional respresentations** that capture most of the variables in the data. 
+
+Evaluation difficulty - because there is no correct output it is often hard to measure how well models perform. 
+
+**Unsupervised methods** often used as a preprocessing step before supervised learning, for example to reduce dimensionality or discover structure in data. 
+
+**Common methods**
+1. Clustering methods 
+2. Principal Component Analysis (PCA)
+3. Independent Component Analysis 
+4. Factor Analysis 
+5. Canonical Correlation Analysis 
+
+**Key takeaway** - Unsupervised learning analyzes unlabeled data to discover structure, groups, or underlying patterns in the dataset. 
+
+# Reinforcement Learning 
+Reinforcement learning is a type of machine learning **where the agent learns to make decisions by interacting with the environment** 
+
+**How the learning process works** 
+The agent: 
+1. Observes the current state of the environment
+2. Takes an action 
+3. Received a reward or penalty from the environment 
+4. Uses this feedback to improve future actions 
+
+**Goal of reinforment learning** 
+The objective is to learn a strategy (policy) that maximizes the total long -term reward. 
+
+**Connection to other fields** 
+In operations research and control theory, reinforcement learning is related to **approximate dynamic programming**
+
+**Mathemtical framework** 
+Reinforcement learning problems are commonly modeled using a markov Decision Process (MDP), which describes states, actions, transitions and rewards. 
+
+**Key takeaway** - Reinformcent learning learns optimal decision - making hrough interaction with an environment using rewards as feedback. 
+
+# Modern Large Language Models (LLMS)
+
+Modern LLMS are a result of the evolution of NLP (natural language processing), moving from traditional statistical methods to transformer based deep learning models. 
+
+**How LLMs work** - They rely on **large neural network architectures (tranformers)** trained on massive datasets using specific training objectives and pipelines. 
+
+**Why LLMS are powerful** 
+Theire performance comes from 
+1. Rich internal representation of language 
+2. Scaling to very large datasets and models 
+3. Emergent behaviours - where new capabilities appear as models become larger 
+
+**How do people interact with LLMs** 
+LLMs are used through techniques such as:
+1. Prompting 
+2. Instruction Tuning 
+3. Reinforcement Learning from Human Feedbacl (RLHF)
+4. Retrieval Augmented Generation (RAG) and external tools. 
+
+Cuurent research direction - active areas include multimodal models (text + images etc), AI agents, safety and evaluation of model behaviour 
+
+Key takeaway for exam: Modern LLms are **large tranformer based models trained on massive data**, and their capabilities come from **scaling, advanced training methods and new interactions like prompting and RLHF.**
+
+# Historical Milestones in NLP and LLM development
+**1950s - 1990s:** - Early NLP relied mainly on symbolic approaches, using handwritten grammar rules and some basic statictical techniques. 
+**1990s - 2000s:** - The field shifted towards data driven methods, using probabilistic models such as n-grams, Hidden Markov Models (HMMs), and Conditional Random Fields (CRFs).
+**2013 - 2017:** - Neural language models became important using deep learning methods such as word embeddings (word2vec) and sequence models like RNNs and LSTMs with attention mechanisms. 
+**2017 - 2020:** - The introduction of trnsformer architectures revolutionized NLP, enabling large-scale pretraining models like BERT and GPT. 
+**2020 - present:** - progress focuses on scaling models to huge sizes, improving alignment with human preferences, integrating external tools and developing multimodal and agent based systems. 
+
+**Key takeaway** - NLP evolved from rule based systems --> statitical models --> neural networks --> transformers --> large-scale LLms with multimodal and agent capabilities. 
+
+_______________________________________________________________
+
+# LINEAR MODELS
+
+Linear models is one of the most fundamental tools in statistical machine learning. They are used to **describe the relationship between input variables (features) and an output variable** using a **linear equation**.
+
+This serves as a core foundation for many machine learning and statistical methods - especially in regression and classification problems. 
+
+# Statistical Machine Learning
+
+In statistical learning we model the relationship between predictors (covariates) X and a response variable Y. 
+
+### General Model
+
+The response is written as
+
+$$
+Y_i = f(X_i) + \epsilon_i
+$$
+
+where:
+
+- $f(X_i)$ represents the true underlying relationship between inputs and output.
+- $\epsilon_i$ is random error (noise) with mean zero, capturing randomness or unexplained variation.
+
+**Interpretation** - The goal of statistical learning is to estimate or approximae the unknown function $f$ using observed data. 
+
+## Income vs Education Example
+
+![Income vs Education](figures-for-notes/income-vs-education.png)
+
+**Key Takeaway** - Statistical machine learning models data as : 
+response = systematic relationship (function $f$) + random error, and the main goal is to **estimate $f$ from data**
