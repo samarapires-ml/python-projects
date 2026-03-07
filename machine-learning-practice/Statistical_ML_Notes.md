@@ -355,5 +355,136 @@ When we choose any learning method we need to try to balance bias and variance  
 
 - Bias : Bias measures the error caused by approximating a complex real-world relationship with a simpler model. 
 High bias models are too simple and may miss important patterns in the data. 
-- Variance: 
+- Variance: Variance measures how much the models predictions would change if we trained it on a different dataset. 
+
+More flexible models usually have **higher variance** which means they are more sensitive to small changes in the training data. 
+
+**Remember** 
+Simple models --> high bias, low variance 
+Complex models --> low bias, high variance
+
+**Goal in ML**: Find the balance that will minimize overall prediction error. 
+
+# Simple Linear Regression 
+
+Linear regression is a basic supervised learning method used to model the relationship between a response variable Y and one or more predictor variables X. 
+
+In real world problems the true relationship is usually more complex and not perfectly linear. 
+
+**So why is linear regression still useful** 
+It's simple yet widely used because: 
+- easy to interpret 
+- computationally efficient
+- A foundation for many advanced statistical and machine learning methods. 
+
+![Linear vs Non Linear](figures-for-notes/linear-vs-nonlinear.png)
+
+In the above graph the red curve represents the true nonlinear relationship and the blue line shows the linear approximation used by linear regression. 
+
+Linear regression assumes a linear relationship between predictors and response and despite being simple it is a fundamental and powerful tool in statistical learning. 
+
+## Simple Linear Regression (SLR)
+
+### Model Idea
+Simple Linear Regression models the relationship between a response variable $Y$ and a single predictor $X$ using a straight-line equation.
+
+### Model Form
+
+$$
+Y = \beta_0 + \beta_1 X + \epsilon
+$$
+
+where:
+
+- $\beta_0$ — intercept (value of $Y$ when $X = 0$)
+- $\beta_1$ — slope (change in $Y$ for a one-unit increase in $X$)
+- $\epsilon$ — random error capturing unexplained variation
+
+### Estimated Regression Line
+
+Since $\beta_0$ and $\beta_1$ are unknown, they are estimated from data:
+
+$$
+\hat{y} = \hat{\beta}_0 + \hat{\beta}_1 x
+$$
+
+### Prediction
+
+For a new input $x$, the predicted response is:
+
+$$
+\hat{y}
+$$
+
+The hat symbol ($\hat{}$) indicates an **estimated or predicted value**.
+
+### Key Takeaway
+
+Simple Linear Regression estimates a **linear relationship between one predictor and a response variable**, using slope and intercept parameters learned from data.
+
+## Estimating Parameters in Simple Linear Regression
+
+### Residuals
+
+For each observation $(y_i, x_i)$, the predicted value from the regression model is
+
+$$
+\hat{y}_i = \hat{\beta}_0 + \hat{\beta}_1 x_i
+$$
+
+The **residual** represents the difference between the observed value and the predicted value:
+
+$$
+e_i = y_i - \hat{y}_i
+$$
+
+Residuals measure the **prediction error** for each data point.
+
+---
+
+### Estimation Method (Ordinary Least Squares)
+
+To estimate the parameters $\beta_0$ and $\beta_1$, we minimize the **Residual Sum of Squares (RSS)**:
+
+$$
+RSS = \sum_i e_i^2 = \sum_i (y_i - \hat{\beta}_0 - \hat{\beta}_1 x_i)^2
+$$
+
+This approach is known as **Ordinary Least Squares (OLS)**.
+
+---
+
+### Estimated Coefficients
+
+Let
+
+$$
+\bar{x} = \frac{1}{n}\sum_i x_i, \qquad
+\bar{y} = \frac{1}{n}\sum_i y_i
+$$
+
+The estimated parameters are
+
+$$
+\hat{\beta}_1 =
+\frac{\sum_i (y_i - \bar{y})(x_i - \bar{x})}
+{\sum_i (x_i - \bar{x})^2}
+$$
+
+$$
+\hat{\beta}_0 = \bar{y} - \hat{\beta}_1 \bar{x}
+$$
+
+---
+
+### Interpretation
+
+- **Slope ($\hat{\beta}_1$)**: measures how the response variable $Y$ changes with a one-unit increase in $X$.
+- **Intercept ($\hat{\beta}_0$)**: ensures the regression line passes through the point $(\bar{x}, \bar{y})$.
+
+---
+
+### Key Takeaway
+
+In **Simple Linear Regression**, the parameters are estimated by minimizing the **sum of squared residuals (RSS)** using the **Ordinary Least Squares (OLS)** method.
 
