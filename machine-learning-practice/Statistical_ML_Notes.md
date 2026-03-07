@@ -488,3 +488,375 @@ $$
 
 In **Simple Linear Regression**, the parameters are estimated by minimizing the **sum of squared residuals (RSS)** using the **Ordinary Least Squares (OLS)** method.
 
+![Advertising data example](figures-for-notes/example-advertising.png)
+
+### Example: Advertising Data
+
+This example shows a simple linear regression model relating **TV advertising expenditure** to **sales**.
+
+- The **blue line** is the least squares regression line.
+- The **grey vertical lines** represent residuals (prediction errors).
+- The regression line is chosen to **minimize the sum of squared residuals (RSS)**.
+
+This approach captures the overall linear relationship between advertising spending and sales.
+
+## Assessing the Coefficient Estimates
+
+After fitting a simple linear regression model
+
+$$
+Y = \beta_0 + \beta_1 X + \epsilon
+$$
+
+we obtain estimates $\hat{\beta}_0$ and $\hat{\beta}_1$.  
+However, these estimates are computed from a **sample of data**, so they are **not the true parameter values**.
+
+If we collected a different sample, the estimated coefficients would be slightly different.  
+Therefore, we need a way to **measure how reliable these estimates are**.
+
+---
+
+## 1. Standard Error (SE)
+
+The **standard error** measures how much an estimated coefficient would vary if we repeatedly collected new datasets and refit the model.
+
+- Small SE → estimate is **stable and reliable**
+- Large SE → estimate is **noisy and uncertain**
+
+Conceptually, imagine collecting many samples of data and estimating the regression line each time.  
+The standard error measures the **variability of those estimates**.
+
+---
+
+## 2. Standard Error of the Slope
+
+The standard error of the slope estimate is
+
+$$
+SE(\hat{\beta}_1) =
+\sqrt{
+\frac{\sigma^2}
+{\sum_i (x_i - \bar{x})^2}
+}
+$$
+
+where
+
+- $\sigma^2 = Var(\epsilon)$ is the variance of the error term.
+
+### Interpretation
+
+The slope estimate becomes more precise when:
+
+1. **Noise is small** (small $\sigma^2$)
+2. **The predictor values vary a lot**
+
+If all $X$ values are very similar, it becomes difficult to estimate a reliable slope.
+
+---
+
+## 3. Standard Error of the Intercept
+
+The standard error of the intercept estimate is
+
+$$
+SE(\hat{\beta}_0) =
+\sqrt{
+\sigma^2
+\left(
+\frac{1}{n}
++
+\frac{\bar{x}^2}{\sum_i (x_i - \bar{x})^2}
+\right)
+}
+$$
+
+This measures the **uncertainty in the intercept estimate**.
+
+The intercept is usually harder to estimate precisely because it depends strongly on how the data are centered.
+
+---
+
+## 4. Confidence Intervals
+
+A **confidence interval (CI)** provides a range of plausible values for the true parameter.
+
+For a 95% confidence interval, the approximate form is
+
+$$
+\hat{\beta}_1 \pm 2 \cdot SE(\hat{\beta}_1)
+$$
+
+The constant "2" comes from the normal distribution and corresponds roughly to a **95% confidence level**.
+
+---
+
+## 5. What a 95% Confidence Interval Means
+
+A common misunderstanding is:
+
+> "There is a 95% probability that the true parameter lies in this interval."
+
+This is **not correct**.
+
+The correct interpretation is:
+
+> If we repeated the sampling process many times and constructed a confidence interval each time, **about 95% of those intervals would contain the true parameter**.
+
+---
+
+## 6. Example: Advertising Dataset
+
+For the advertising data, the 95% confidence interval for the slope coefficient is
+
+$$
+[0.042, 0.053]
+$$
+
+This means that for every additional unit of **TV advertising**, sales increase by approximately
+
+- **at least 0.042**
+- **at most 0.053**
+
+This indicates that the relationship between TV advertising and sales is **clearly positive**.
+
+---
+
+## Key Takeaway
+
+When fitting a regression model we:
+
+1. Estimate regression coefficients
+2. Measure the **uncertainty** of those estimates using **standard errors**
+3. Express that uncertainty using **confidence intervals**
+
+This allows us to assess **how trustworthy our regression results are**.
+
+## Hypothesis Testing in Linear Regression
+
+After fitting a regression model
+
+$$
+Y = \beta_0 + \beta_1 X + \epsilon
+$$
+
+we want to determine whether the relationship between **X and Y** is real or simply due to random variation in the data.
+
+Hypothesis testing helps us answer this question.
+
+---
+
+## The Hypotheses
+
+We test two competing statements about the slope coefficient.
+
+### Null Hypothesis
+
+$$
+H_0: \beta_1 = 0
+$$
+
+This means there is **no relationship between X and Y**.
+
+If this is true, the regression model reduces to
+
+$$
+Y = \beta_0 + \epsilon
+$$
+
+which implies that **X does not influence Y**.
+
+---
+
+### Alternative Hypothesis
+
+$$
+H_A: \beta_1 \neq 0
+$$
+
+This means there **is a relationship between X and Y**, and the predictor variable helps explain changes in the response variable.
+
+---
+
+## Role of the Standard Error
+
+To test the hypotheses, we use the **standard error of the slope estimate**.
+
+The idea is to check whether the estimated slope $\hat{\beta}_1$ is **large relative to its standard error**.
+
+- If the slope is **much larger than its standard error**, it suggests the relationship between X and Y is real.
+- If the slope is **similar in size to its standard error**, the relationship could simply be due to random noise.
+
+---
+
+## Intuition
+
+- If $\beta_1 = 0$ → X and Y are unrelated.
+- If $\beta_1 \neq 0$ → X helps explain variation in Y.
+
+Hypothesis testing allows us to determine whether the predictor variable **has a statistically significant effect** on the response variable.
+
+---
+
+## Key Idea
+
+In simple linear regression, we typically test
+
+$$
+H_0 : \beta_1 = 0
+$$
+
+to determine whether the predictor variable **X has a statistically significant relationship with Y**.
+
+## Hypothesis Testing, t-Statistic, and Model Fit
+
+After estimating a simple linear regression model
+
+$$
+Y = \beta_0 + \beta_1 X + \epsilon
+$$
+
+we want to determine whether the relationship between **X and Y** is statistically significant and how well the model explains the data.
+
+---
+
+## 1. The t-Statistic
+
+To test the null hypothesis
+
+$$
+H_0 : \beta_1 = 0
+$$
+
+we compute the **t-statistic**
+
+$$
+t = \frac{\hat{\beta}_1 - 0}{SE(\hat{\beta}_1)}
+$$
+
+This measures **how many standard errors the estimated slope is away from zero**.
+
+### Interpretation
+
+- **Small |t|** → the slope could be due to random noise.
+- **Large |t|** → the slope is far from zero, suggesting a real relationship between X and Y.
+
+### Example intuition
+
+If
+
+$$
+\hat{\beta}_1 = 0.05, \quad SE = 0.01
+$$
+
+then
+
+$$
+t = 5
+$$
+
+meaning the estimate is **5 standard errors away from zero**, which is strong evidence of a relationship.
+
+---
+
+## 2. Distribution of the t-Statistic
+
+Under the null hypothesis
+
+$$
+H_0 : \beta_1 = 0
+$$
+
+the t-statistic follows a **t-distribution with \(n-2\) degrees of freedom**.
+
+Why \(n-2\)?
+
+Because we estimate two parameters:
+
+- $\beta_0$ (intercept)
+- $\beta_1$ (slope)
+
+This reduces the degrees of freedom by two.
+
+---
+
+## 3. The p-Value
+
+The **p-value** is the probability of observing a t-statistic as extreme as the one computed if the null hypothesis were true.
+
+### Interpretation
+
+- **Small p-value (< 0.05)** → reject \(H_0\)  
+- **Large p-value** → insufficient evidence against \(H_0\)
+
+If the p-value is small, it suggests that **X has a statistically significant effect on Y**.
+
+---
+
+## 4. R-Squared (Goodness of Fit)
+
+The **R-squared statistic** measures how much of the variability in the response variable is explained by the model.
+
+$$
+R^2 = \frac{TSS - RSS}{TSS} = 1 - \frac{RSS}{TSS}
+$$
+
+---
+
+## Components of R²
+
+### Total Sum of Squares (TSS)
+
+$$
+TSS = \sum_i (y_i - \bar{y})^2
+$$
+
+Measures the **total variability in Y around its mean**.
+
+---
+
+### Residual Sum of Squares (RSS)
+
+$$
+RSS = \sum_i (y_i - \hat{y}_i)^2
+$$
+
+Measures the **unexplained error after fitting the regression model**.
+
+---
+
+## 5. Meaning of \(R^2\)
+
+R-squared represents the **fraction of variance explained by the model**.
+
+Examples:
+
+| R² | Interpretation |
+|----|---------------|
+| 0.2 | Model explains 20% of variation |
+| 0.6 | Model explains 60% of variation |
+| 0.9 | Very strong fit |
+
+Example:
+
+If
+
+$$
+R^2 = 0.72
+$$
+
+then **72% of the variation in Y is explained by X**.
+
+---
+
+## Key Intuition
+
+Regression analysis answers two main questions:
+
+1️⃣ **Is there a relationship?**  
+→ Use **hypothesis testing** (t-test, p-value)
+
+2️⃣ **How strong is the model?**  
+→ Use **R² (goodness of fit)**
+
+Together, these measures help determine whether the regression results are **statistically meaningful and useful for prediction**.
