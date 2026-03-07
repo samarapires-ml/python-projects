@@ -934,3 +934,966 @@ Build a model that:
 - Avoids unnecessary complexity  
 
 In other words, we aim to find the **best predictive model without overfitting**.
+
+## Multiple Linear Regression
+
+In many real-world problems, the response variable depends on **multiple predictors**, not just one.  
+Multiple Linear Regression extends simple linear regression to include several explanatory variables.
+
+### Model
+
+The multiple linear regression model is:
+
+$$
+Y = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + ... + \beta_p X_p + \epsilon
+$$
+
+Where:
+
+- **Y** = response variable (what we want to predict)
+- **X₁, X₂, ..., Xₚ** = predictor variables
+- **β₀** = intercept
+- **β₁, β₂, ..., βₚ** = regression coefficients
+- **ε** = random error term (often assumed to follow \(N(0, \sigma^2)\))
+
+---
+
+## Interpretation of the Coefficients
+
+Each coefficient **βⱼ** represents the **average change in Y when Xⱼ increases by one unit**, while **all other predictors remain fixed**.
+
+This is called the **partial effect** of a variable.
+
+In other words, the coefficient measures the **separate contribution of each predictor** to the response.
+
+---
+
+## Example: Advertising Data
+
+Suppose we model product sales using three advertising channels:
+
+- TV advertising
+- Radio advertising
+- Newspaper advertising
+
+The regression model becomes:
+
+$$
+Sales = \beta_0 + \beta_1 TV + \beta_2 Radio + \beta_3 Newspaper + \epsilon
+$$
+
+Interpretation:
+
+- **β₁** → effect of TV advertising on sales  
+- **β₂** → effect of Radio advertising on sales  
+- **β₃** → effect of Newspaper advertising on sales  
+
+Each effect is measured **while the other advertising channels are held constant**.
+
+---
+
+## Key Idea
+
+Multiple regression allows us to measure the **individual impact of several predictors simultaneously**, helping us understand how each variable contributes to predicting the response.
+
+## Multiple Linear Regression
+
+Multiple Linear Regression extends simple linear regression by allowing **multiple predictor variables** to explain a response variable.
+
+### Model
+
+The multiple regression model is
+
+Y = β₀ + β₁X₁ + β₂X₂ + ... + βₚXₚ + ε
+
+where:
+
+- **Y** = response variable (what we want to predict)
+- **X₁, X₂, ..., Xₚ** = predictor variables
+- **β₀** = intercept
+- **β₁, β₂, ..., βₚ** = coefficients
+- **ε** = random error term, usually assumed to follow  
+  ε ~ N(0, σ²)
+
+---
+
+## Meaning of the Coefficients
+
+Each coefficient **βⱼ** represents the **average change in Y when Xⱼ increases by one unit**, while **all other predictors are held fixed**.
+
+This is called the **partial effect** of the predictor.
+
+In other words, the coefficient measures how much a variable contributes to predicting **Y independently of the other variables**.
+
+---
+
+## Example: Advertising Data
+
+Suppose we want to predict product **sales** using three advertising channels:
+
+- TV advertising
+- Radio advertising
+- Newspaper advertising
+
+The regression model becomes
+
+Sales = β₀ + β₁(TV) + β₂(Radio) + β₃(Newspaper) + ε
+
+### Interpretation
+
+- **β₁** → effect of TV advertising on sales
+- **β₂** → effect of radio advertising on sales
+- **β₃** → effect of newspaper advertising on sales
+
+Each effect is measured **while the other advertising channels are held constant**.
+
+---
+
+## Key Takeaway
+
+Multiple linear regression allows us to measure the **separate contribution of multiple predictors** when explaining or predicting a response variable.
+
+## Multiple Linear Regression
+
+Multiple Linear Regression is used when the response variable depends on **more than one predictor variable**.
+
+### Model
+
+The multiple regression model is
+
+Y = β₀ + β₁X₁ + β₂X₂ + ... + βₚXₚ + ε
+
+where:
+
+- **Y** = response variable (what we want to predict)
+- **X₁, X₂, ..., Xₚ** = predictor variables
+- **β₀** = intercept
+- **β₁, β₂, ..., βₚ** = regression coefficients
+- **ε** = random error term, typically assumed to follow  
+  ε ~ N(0, σ²)
+
+---
+
+## Interpretation of the Coefficients
+
+Each coefficient **βⱼ** represents the **average change in Y when Xⱼ increases by one unit**, while **all other predictors remain fixed**.
+
+This is called the **partial effect** of the predictor.
+
+In other words, the coefficient measures the **individual contribution of each variable** to predicting Y.
+
+---
+
+## Example: Advertising Data
+
+Suppose we want to predict **sales** using three types of advertising:
+
+- TV advertising
+- Radio advertising
+- Newspaper advertising
+
+The regression model becomes
+
+Sales = β₀ + β₁ × TV + β₂ × Radio + β₃ × Newspaper + ε
+
+### Interpretation
+
+- **β₁** → effect of TV advertising on sales  
+- **β₂** → effect of radio advertising on sales  
+- **β₃** → effect of newspaper advertising on sales  
+
+Each effect is estimated **while keeping the other advertising channels constant**.
+
+---
+
+## Key Idea
+
+Multiple linear regression allows us to measure the **separate impact of multiple predictors** on the response variable, helping us understand how different variables contribute to predicting Y.
+
+
+## Coefficient Interpretation in Multiple Linear Regression
+
+In multiple linear regression, each coefficient represents the effect of a predictor on the response variable **while holding all other predictors constant**.
+
+### Ideal Case: Predictors are Uncorrelated
+
+The easiest situation for interpretation occurs when the predictors are **uncorrelated** (sometimes called a *balanced design*).
+
+In this case:
+
+- Each coefficient can be estimated and tested **independently**
+- The interpretation is straightforward
+
+If \(X_j\) increases by **one unit**, then the response variable \(Y\) changes by **\(\beta_j\)**, **while all other variables remain fixed**.
+
+This allows us to interpret the **separate contribution of each variable** to predicting \(Y\).
+
+---
+
+## When Predictors are Correlated
+
+Problems arise when predictors are **correlated with each other**.
+
+For example, in advertising data, spending on **TV and radio advertising** might increase together.
+
+This creates several issues:
+
+- Coefficient estimates become **unstable**
+- The **variance of coefficient estimates increases**
+- It becomes difficult to determine **which variable is actually responsible for the change in \(Y\)**
+
+This phenomenon is known as **multicollinearity**.
+
+Because predictors move together, when one variable changes, others tend to change as well, making interpretation harder.
+
+---
+
+## Causality Warning
+
+Regression analysis on **observational data** identifies **associations**, not necessarily **causal relationships**.
+
+Example:
+
+- Ice cream sales increase
+- Drowning incidents increase
+
+Regression may detect a relationship, but the true cause is **temperature** (a hidden variable).
+
+Therefore:
+
+> Regression models show **relationships between variables**, but they do not automatically prove **cause and effect**.
+
+---
+
+## Key Takeaways
+
+- If predictors are **independent**, coefficients are easy to interpret.
+- If predictors are **correlated**, interpretation becomes difficult due to **multicollinearity**.
+- Regression identifies **associations**, not necessarily **causal effects**.
+
+## The Woes of Regression Coefficients
+
+In multiple linear regression, a coefficient \( \beta_j \) represents the **expected change in the response variable \(Y\)** when the predictor \(X_j\) increases by one unit **while all other predictors are held fixed**.
+
+This interpretation works well in theory, but it can become problematic in practice because predictors often **change together**.
+
+---
+
+## Why This Can Be Problematic
+
+The regression interpretation assumes that we can change one variable while keeping the others constant.  
+However, in real-world data, predictors are often **correlated**, meaning they tend to move together.
+
+When this happens, the interpretation of regression coefficients becomes less intuitive.
+
+---
+
+## Example 1: Coins in Your Pocket
+
+Suppose we want to model:
+
+- \(Y\) = total amount of money in your pocket  
+- \(X_1\) = number of coins  
+- \(X_2\) = number of pennies, nickels, and dimes  
+
+If the number of pennies increases, the **number of coins also increases**.
+
+So it is unrealistic to interpret the coefficient of \(X_2\) as:
+
+> increasing pennies while keeping the number of coins fixed.
+
+Because these variables naturally change together, interpreting their coefficients separately can be misleading.
+
+---
+
+## Example 2: Football Player Tackles
+
+Suppose we model:
+
+- \(Y\) = number of tackles in a season  
+- \(W\) = player weight  
+- \(H\) = player height  
+
+Regression model:
+
+\[
+Y = \beta_0 + 0.50W - 0.10H
+\]
+
+At first glance, the negative coefficient for height may seem strange.
+
+However, the coefficient for height means:
+
+> If height increases by one unit **while weight stays constant**, the number of tackles decreases.
+
+But in reality, taller players are often heavier, so the model is considering an **unusual scenario**: a taller player with the same weight (a thinner player). This can lead to unexpected coefficient signs.
+
+---
+
+## Key Insight
+
+Regression coefficients assume that other predictors remain fixed.  
+But when predictors are correlated, this assumption may represent **unrealistic situations**, making coefficient interpretations harder.
+
+This issue is closely related to **multicollinearity**.
+
+---
+
+## Main Takeaway
+
+- Regression coefficients describe the effect of one variable **holding others fixed**
+- In real data, predictors often **change together**
+- This can make coefficient interpretations **counterintuitive**
+
+# 2 Quotes by Famous Statisticians 
+
+Essentially, all models are wrong but some are useful - George Box
+The only way to find out what will happen when a complex system is disturbed is to disturb the system - not merely observe it passively. - Fred Mosteller and John Tukey, paraphrasing George Box
+
+## Coefficient Estimation in Multiple Linear Regression
+
+In multiple linear regression, the goal is to estimate the unknown coefficients of the model.
+
+The regression model is
+
+Y = β₀ + β₁X₁ + β₂X₂ + ... + βₚXₚ + ε
+
+Since the true coefficients β₀, β₁, ..., βₚ are unknown, we estimate them from data.  
+The estimated regression equation becomes
+
+ŷ = β̂₀ + β̂₁X₁ + ... + β̂ₚXₚ
+
+where:
+
+- ŷ = predicted value of Y
+- β̂₀, β̂₁, ..., β̂ₚ = estimated regression coefficients
+
+---
+
+## Residuals
+
+For each observation we compare:
+
+Actual value: yᵢ  
+Predicted value: ŷᵢ  
+
+The difference between them is called the **residual**:
+
+eᵢ = yᵢ − ŷᵢ
+
+Residuals represent the **prediction errors** of the model.
+
+---
+
+## Residual Sum of Squares (RSS)
+
+To measure the overall prediction error, we compute the **Residual Sum of Squares**:
+
+RSS = Σ (yᵢ − ŷᵢ)²
+
+This quantity measures the total squared difference between the observed values and the predicted values.
+
+---
+
+## Least Squares Estimation
+
+The regression coefficients are chosen to **minimize the Residual Sum of Squares (RSS)**.
+
+The values
+
+β̂₀, β̂₁, ..., β̂ₚ
+
+that minimize RSS are called the **least squares estimates**.
+
+This method is known as **Ordinary Least Squares (OLS)** and is used by statistical software to estimate regression models.
+
+---
+
+## Key Idea
+
+Multiple linear regression estimates coefficients by choosing the values that **minimize the total squared prediction error**.
+
+![Coefficient of Estimation](figures-for-notes/coefficient-estimation-example.png)
+
+## Estimation Example (Geometric Interpretation)
+
+This figure illustrates how **multiple linear regression fits a surface to data**.
+
+### Axes in the Plot
+
+The graph shows three variables:
+
+- **X₁** – first predictor variable
+- **X₂** – second predictor variable
+- **Y** – response variable
+
+Each red point represents an observed data point with coordinates:
+
+(X₁, X₂, Y)
+
+---
+
+## The Regression Plane
+
+In simple linear regression, we fit a **line** to the data.  
+In multiple linear regression, we fit a **plane**.
+
+The model is:
+
+Y = β₀ + β₁X₁ + β₂X₂
+
+The colored surface in the plot represents this **regression plane**.
+
+For any combination of \(X₁\) and \(X₂\), the plane gives the predicted value:
+
+ŷ = β̂₀ + β̂₁X₁ + β̂₂X₂
+
+---
+
+## Residuals (Prediction Errors)
+
+The vertical lines between the red points and the plane represent **residuals**.
+
+Residual for observation \(i\):
+
+eᵢ = yᵢ − ŷᵢ
+
+These measure the difference between the **actual value** and the **predicted value**.
+
+---
+
+## Least Squares Estimation
+
+The regression coefficients are chosen to minimize the **Residual Sum of Squares (RSS)**:
+
+RSS = Σ (yᵢ − ŷᵢ)²
+
+This places the regression plane so that the **total squared vertical distance between the data points and the plane is minimized**.
+
+---
+
+## Key Insight
+
+- Simple linear regression fits a **line**
+- Multiple linear regression fits a **plane (or hyperplane)**
+
+The goal is always to **minimize squared prediction errors**.
+
+## Inference in Multiple Linear Regression
+
+After fitting a regression model, we want to understand whether the predictors are useful and how reliable our predictions are. This is done through **statistical inference**.
+
+---
+
+## 1. Is the Model Useful? (F-Test)
+
+First we test whether **at least one predictor affects the response variable**.
+
+Null hypothesis:
+
+H₀: β₁ = β₂ = ... = βₚ = 0
+
+Alternative hypothesis:
+
+Hₐ: At least one βⱼ ≠ 0
+
+This is tested using the **F-statistic**:
+
+F = ((TSS − RSS)/p) / (RSS/(n − p − 1))
+
+Where:
+
+- **TSS** = Total Sum of Squares
+- **RSS** = Residual Sum of Squares
+- **p** = number of predictors
+- **n** = sample size
+
+A large F-value suggests that the predictors explain a significant portion of the variation in Y.
+
+---
+
+## 2. Is an Individual Predictor Useful? (t-Test)
+
+To test whether a specific predictor \(X_i\) is useful, we test:
+
+H₀: βᵢ = 0
+
+The test statistic is
+
+t = β̂ᵢ / SE(β̂ᵢ)
+
+If the t-statistic is large (or the p-value is small), we conclude that the predictor has a significant effect on Y.
+
+---
+
+## 3. Prediction Interval (PI)
+
+A **prediction interval** estimates the range where a **future individual observation** is likely to fall.
+
+This interval accounts for:
+
+- uncertainty in the regression estimate
+- natural variation in individual observations
+
+---
+
+## 4. Confidence Interval (CI)
+
+A **confidence interval** estimates the range of the **average response value** for given predictor values.
+
+---
+
+## Key Difference
+
+Prediction Interval (PI) → predicts **individual observation**
+
+Confidence Interval (CI) → estimates **average response**
+
+Prediction intervals are **wider than confidence intervals** because they include more sources of uncertainty.
+
+## Advertising Example: Interpreting Regression Output
+
+This example shows the results of fitting a multiple linear regression model to predict **sales** using three advertising channels:
+
+Sales = β₀ + β₁(TV) + β₂(Radio) + β₃(Newspaper) + ε
+
+---
+
+## Estimated Coefficients
+
+| Predictor | Estimate | Interpretation |
+|-----------|----------|---------------|
+| Intercept | 2.94 | Baseline sales when advertising spending is zero |
+| TV | 0.0458 | Increasing TV advertising by 1 unit increases sales by about **0.0458 units**, holding other variables fixed |
+| Radio | 0.1885 | Increasing radio advertising by 1 unit increases sales by about **0.1885 units**, holding other variables fixed |
+| Newspaper | -0.0010 | Very close to zero → newspaper advertising has little effect on sales |
+
+---
+
+## Statistical Significance (p-values)
+
+| Predictor | p-value | Conclusion |
+|-----------|--------|------------|
+| TV | < 2e-16 | Highly significant |
+| Radio | < 2e-16 | Highly significant |
+| Newspaper | 0.86 | Not significant |
+
+Rule of thumb:
+
+p-value < 0.05 → predictor is statistically significant.
+
+**Conclusion:** TV and Radio advertising significantly affect sales, but Newspaper advertising does not add meaningful predictive power.
+
+---
+
+## Model Quality
+
+Multiple R-squared = **0.897**
+
+This means the model explains about **89.7% of the variation in sales**, indicating a very strong fit.
+
+---
+
+## Overall Model Significance
+
+F-statistic = **570.3**
+
+p-value < **2.2e-16**
+
+This test checks whether **at least one predictor is useful**.
+
+Since the p-value is extremely small, we conclude that **the regression model is statistically significant overall**.
+
+---
+
+## Confidence Interval (CI)
+
+Average predicted sales:
+
+Fit = **20.52**
+
+95% Confidence Interval:
+
+[19.99, 21.05]
+
+Interpretation:
+
+The **average expected sales** for these predictor values likely fall between **19.99 and 21.05**.
+
+---
+
+## Prediction Interval (PI)
+
+Predicted value for a **new observation**:
+
+Fit = **20.52**
+
+95% Prediction Interval:
+
+[17.15, 23.88]
+
+Prediction intervals are **wider** because they account for variability in individual observations.
+
+---
+
+## Key Takeaways
+
+- **TV and Radio advertising significantly increase sales.**
+- **Newspaper advertising does not significantly contribute to predicting sales.**
+- The model explains **about 90% of the variability in sales**, indicating a strong fit.
+- Prediction intervals are **wider than confidence intervals** because they include additional uncertainty from individual observations.
+
+## Indicator Variables (Categorical Predictors)
+
+Sometimes predictors in regression are **not numerical**.  
+Instead, they represent **categories** such as gender, city, or product type.
+
+These are called:
+
+- **Categorical variables**
+- **Factor variables**
+- **Indicator variables (dummy variables)**
+
+---
+
+## Example: Gender
+
+Suppose we want to study whether **credit card balance differs between males and females**.
+
+Since gender is categorical, we convert it into a **numeric indicator variable**.
+
+Define:
+
+xᵢ =  
+- 1 → if person *i* is **female**  
+- 0 → if person *i* is **male**
+
+---
+
+## Regression Model
+
+We fit the regression:
+
+Yᵢ = β₀ + β₁xᵢ + εᵢ
+
+where:
+
+- **Yᵢ** = credit card balance
+- **xᵢ** = indicator variable (gender)
+
+---
+
+## Interpretation
+
+### If the person is male
+
+xᵢ = 0
+
+The model becomes:
+
+Yᵢ = β₀ + εᵢ
+
+So **β₀ represents the average balance for males**.
+
+---
+
+### If the person is female
+
+xᵢ = 1
+
+The model becomes:
+
+Yᵢ = β₀ + β₁ + εᵢ
+
+So **β₀ + β₁ represents the average balance for females**.
+
+---
+
+## Meaning of β₁
+
+β₁ measures the **difference between the two groups**.
+
+β₁ = Average balance (female) − Average balance (male)
+
+So:
+
+- **β₁ > 0 → females have higher balances**
+- **β₁ < 0 → males have higher balances**
+
+---
+
+## Key Idea
+
+Indicator variables allow regression to **include categorical data** by converting categories into **0/1 numeric variables**.
+
+This lets regression models analyze **group differences**.
+
+---
+
+## What if there are more than two categories?
+
+If a variable has **k categories**, we use **k − 1 indicator variables**.
+
+Example: City
+
+- Edmonton → (1,0)
+- Calgary → (0,1)
+- Vancouver → (0,0) (reference category)
+
+This avoids **perfect multicollinearity**.
+
+---
+
+## Key Takeaway
+
+Indicator variables allow regression models to include **qualitative variables** and measure **differences between groups** in the response variable.
+
+## Indicator Variables with Multiple Categories
+
+When a categorical variable has **k categories (levels)**, we cannot include all k indicators in a regression model.
+
+Instead, we use **k − 1 indicator variables**.
+
+This avoids a problem called **perfect multicollinearity**.
+
+---
+
+## Example: 3 Categories
+
+Suppose a categorical variable **x** has three levels:
+
+- A
+- B
+- C
+
+We create **two indicator variables**:
+
+x_A =  
+- 1 if x = A  
+- 0 otherwise  
+
+x_B =  
+- 1 if x = B  
+- 0 otherwise  
+
+---
+
+## Baseline Category
+
+If the observation belongs to **C**, then:
+
+x_A = 0  
+x_B = 0  
+
+So **C becomes the baseline (reference category)**.
+
+The regression model compares other categories **relative to this baseline**.
+
+---
+
+## Regression Model
+
+The model becomes:
+
+Y = β₀ + β_A x_A + β_B x_B + ε
+
+---
+
+## Interpretation of Coefficients
+
+| Case | Model Value | Meaning |
+|-----|-----|-----|
+| x = C | Y = β₀ + ε | Baseline category |
+| x = A | Y = β₀ + β_A + ε | Difference between A and C |
+| x = B | Y = β₀ + β_B + ε | Difference between B and C |
+
+---
+
+## Meaning of the Coefficients
+
+- **β_A** = difference between category **A and baseline C**
+- **β_B** = difference between category **B and baseline C**
+
+These are called **contrasts**.
+
+---
+
+## Key Takeaway
+
+For a categorical variable with **k levels**, we use **k − 1 indicator variables**, and the remaining category becomes the **baseline** that all other categories are compared against.
+
+## Why Model Selection
+
+In many real-world problems, we may have **many predictors (features)** available.
+
+Sometimes the number of predictors **p** can even be larger than the number of observations **n**.
+
+Because of this, we usually do **model selection** — choosing only the **important predictors** to include in the model.
+
+This follows **Occam's Razor**, which states that **simpler models are preferred when they explain the data well**.
+
+---
+
+## Why Remove Unimportant Predictors?
+
+### 1. Simpler Models
+
+Removing unnecessary variables makes the model:
+
+- easier to understand
+- easier to interpret
+- less complex
+
+---
+
+### 2. Lower Cost of Prediction
+
+If a model requires fewer variables:
+
+- fewer measurements need to be collected
+- prediction becomes cheaper and faster
+
+Example:
+If predicting house prices requires only **size and location**, we don't need to measure **20 other variables**.
+
+---
+
+### 3. Better Prediction Performance
+
+Including too many predictors can cause **overfitting**.
+
+Overfitting means the model learns noise from the training data and performs poorly on new data.
+
+Removing irrelevant predictors can **improve prediction accuracy** on new observations.
+
+---
+
+## Prediction Error Decomposition
+
+Prediction error is often written as:
+
+\[
+MSE = Bias^2 + Variance
+\]
+
+Where:
+
+- **Bias** = error due to overly simple models
+- **Variance** = error due to overly complex models
+
+---
+
+## The Bias–Variance Tradeoff
+
+Model selection is a **balance between bias and variance**.
+
+- **Too many variables → high variance → overfitting**
+- **Too few variables → high bias → underfitting**
+
+The goal is to choose a model with the **right level of complexity**.
+
+---
+
+## Key Takeaway
+
+Model selection helps us:
+
+- keep only **important predictors**
+- build **simpler models**
+- reduce **cost and complexity**
+- improve **prediction performance**
+- manage the **bias–variance tradeoff**
+
+## How to Select a Model in Linear Regression
+
+When we have many predictors, we need methods to decide **which variables to include in the model**.  
+There are three common approaches used in linear regression.
+
+---
+
+## 1. Subset Selection
+
+Subset selection chooses **a subset of the available predictors** that are most related to the response variable.
+
+Instead of using all predictors, we fit the regression model using only the selected variables.
+
+Two common methods are:
+
+### Best Subset Selection
+- Fits models using **all possible combinations of predictors**.
+- Then selects the best model based on a performance metric (like AIC, BIC, or adjusted \(R^2\)).
+
+### Stepwise Selection
+Adds or removes predictors step-by-step.
+
+Common variants:
+- **Forward Selection** → start with no predictors, add variables one at a time.
+- **Backward Selection** → start with all predictors, remove the least useful variables.
+- **Stepwise Selection** → combination of forward and backward methods.
+
+Goal: find a **good subset of predictors without testing every possible model**.
+
+---
+
+## 2. Shrinkage (Regularization)
+
+Shrinkage methods keep **all predictors in the model**, but they **shrink the estimated coefficients toward zero**.
+
+This reduces model complexity and helps prevent overfitting.
+
+Mathematically, the coefficients become **smaller than the ordinary least squares estimates**.
+
+Benefits:
+- Reduces **variance of the model**
+- Improves **prediction performance**
+- Can sometimes **automatically remove unimportant variables**
+
+Common shrinkage methods in machine learning:
+
+- **Ridge Regression**
+- **Lasso Regression**
+- **Elastic Net**
+
+These methods are also called **regularization techniques**.
+
+---
+
+## 3. Dimension Reduction
+
+Instead of selecting predictors, we **transform the original predictors into a smaller set of new variables**.
+
+If we start with **p predictors**, we create **M new variables**, where:
+
+\[
+M < p
+\]
+
+These new variables are **linear combinations of the original predictors**.
+
+We then fit a regression model using these new variables instead.
+
+Example techniques:
+
+- **Principal Component Regression (PCR)**
+- **Partial Least Squares (PLS)**
+
+Benefits:
+- Reduces complexity
+- Handles highly correlated predictors
+- Improves stability of the model
+
+---
+
+## Key Idea
+
+All three approaches aim to **handle situations with many predictors** and improve model performance.
+
+| Method | Main Idea |
+|------|------|
+| Subset Selection | Choose a subset of predictors |
+| Shrinkage | Keep all predictors but shrink coefficients |
+| Dimension Reduction | Create new predictors from combinations of the original ones |
+
+Each method helps **reduce overfitting and improve prediction accuracy**.
+
+
