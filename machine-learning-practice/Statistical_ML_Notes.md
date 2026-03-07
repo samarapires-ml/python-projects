@@ -4273,7 +4273,7 @@ Refit the model **without the removed predictor** and repeat the process until a
 ### Key Idea
 
 Backward elimination gradually **simplifies the model by removing unimportant predictors**, helping reduce model complexity and improve interpretability.
-```
+
 ## Forward Selection
 
 Forward selection is a stepwise model selection method that **starts with no predictors** and **adds predictors one at a time** based on their statistical significance.
