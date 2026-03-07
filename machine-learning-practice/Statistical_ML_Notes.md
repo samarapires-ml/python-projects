@@ -860,3 +860,77 @@ Regression analysis answers two main questions:
 → Use **R² (goodness of fit)**
 
 Together, these measures help determine whether the regression results are **statistically meaningful and useful for prediction**.
+
+# Linear Model 
+
+## Multiple Linear Regression
+
+In many real-world problems, a response variable depends on **multiple predictors**, not just one.
+
+Instead of the simple linear regression model
+
+Y = β₀ + β₁X + ε
+
+we use **multiple linear regression**, where several predictors explain the response:
+
+Y = β₀ + β₁X₁ + β₂X₂ + ... + βₚXₚ + ε
+
+Where:
+
+- **Y** = response variable  
+- **X₁, X₂, ..., Xₚ** = predictor variables  
+- **β₀** = intercept  
+- **β₁, β₂, ..., βₚ** = coefficients measuring the effect of each predictor  
+- **ε** = random error term  
+
+### Example
+
+Predicting **house price** using multiple predictors:
+
+- Size of the house  
+- Location  
+- Number of bedrooms  
+- Age of the house  
+
+Each variable contributes to explaining the final price.
+
+---
+
+## Indicator Variables (Categorical Variables)
+
+Regression models require **numerical inputs**, but many predictors are **categorical**.
+
+Indicator variables (also called **dummy variables**) allow categorical information to be included in regression.
+
+### Example: Gender
+
+Male = 0  
+Female = 1  
+
+### Example: City
+
+Edmonton = 1, otherwise 0  
+Calgary = 1, otherwise 0  
+
+These variables allow regression models to handle **non-numeric categories**.
+
+---
+
+## Model Selection
+
+When many predictors are available, we must decide:
+
+- Which variables should remain in the model
+- Which variables should be removed
+
+Including too many predictors can lead to **overfitting**, where the model fits the training data well but performs poorly on new data.
+
+### Goal
+
+Build a model that:
+
+- Explains the data well  
+- Uses only relevant predictors  
+- Avoids unnecessary complexity  
+
+In other words, we aim to find the **best predictive model without overfitting**.
