@@ -1896,4 +1896,1499 @@ All three approaches aim to **handle situations with many predictors** and impro
 
 Each method helps **reduce overfitting and improve prediction accuracy**.
 
+## Coefficient Estimation in Linear Regression
+
+In multiple linear regression, we want to estimate the **unknown coefficients** of the model using observed data.
+
+The regression model is:
+
+Y = β₀ + β₁X₁ + β₂X₂ + ... + βₚXₚ + ε
+
+Where:
+
+- **Y** → response variable (what we want to predict)
+- **X₁, X₂, ..., Xₚ** → predictors (features)
+- **β₀, β₁, ..., βₚ** → unknown coefficients
+- **ε** → random error (noise)
+
+Our goal is to **estimate the coefficients** β₀, β₁, ..., βₚ using the data.
+
+---
+
+# Observations and Data Structure
+
+Suppose we have **n observations**.
+
+For each observation *i*, we observe:
+
+- response: **yᵢ**
+- predictors: **xᵢ₁, xᵢ₂, ..., xᵢₚ**
+
+The model for each observation becomes:
+
+y₁ = β₀ + β₁x₁₁ + β₂x₁₂ + ... + βₚx₁ₚ + ε₁  
+
+y₂ = β₀ + β₁x₂₁ + β₂x₂₂ + ... + βₚx₂ₚ + ε₂  
+
+⋮  
+
+yₙ = β₀ + β₁xₙ₁ + β₂xₙ₂ + ... + βₚxₙₚ + εₙ  
+
+Each observation follows the **same regression model**, but with different predictor values.
+
+---
+
+# Estimated Regression Equation
+
+After estimating the coefficients, the **fitted regression model** becomes:
+
+ŷ = β̂₀ + β̂₁x₁ + ... + β̂ₚxₚ
+
+Where:
+
+- **β̂ (beta-hat)** = estimated coefficient
+- **ŷ** = predicted value of Y
+
+These estimated coefficients are obtained from the data.
+
+---
+
+# Residuals
+
+A **residual** is the difference between the observed value and the predicted value.
+
+residual = yᵢ − ŷᵢ
+
+Where:
+
+- **yᵢ** → actual value
+- **ŷᵢ** → predicted value
+
+Residuals represent the **prediction errors of the model**.
+
+---
+
+# Residual Sum of Squares (RSS)
+
+To estimate the coefficients, we minimize the **Residual Sum of Squares (RSS)**:
+
+RSS = Σ (yᵢ − ŷᵢ)²
+
+This measures the **total squared prediction error** of the model.
+
+The idea is simple:
+
+Choose the coefficients **β₀, β₁, ..., βₚ** that make the predictions **as close as possible to the observed data**.
+
+---
+
+# Least Squares Estimation
+
+The coefficients that **minimize RSS** are called the **least squares estimates**.
+
+These are:
+
+β̂₀, β̂₁, ..., β̂ₚ
+
+This method is called **Ordinary Least Squares (OLS)**.
+
+Modern statistical software (R, Python, etc.) automatically computes these values.
+
+---
+
+# Intuition
+
+The regression model tries to find the coefficients that produce a line (or hyperplane) that **best fits the data**.
+
+In simple regression → the best fitting **line**.
+
+In multiple regression → the best fitting **plane or hyperplane**.
+
+The chosen coefficients minimize the **overall squared prediction errors**.
+
+---
+
+# Key Takeaway
+
+Coefficient estimation in linear regression works by:
+
+1. Observing data (yᵢ, xᵢ₁, ..., xᵢₚ)
+2. Predicting values using a regression equation
+3. Measuring prediction errors (residuals)
+4. Choosing coefficients that **minimize the residual sum of squares (RSS)**
+
+This process is called **least squares estimation**.
+
+## Matrix Form of Linear Regression
+
+Linear regression can be written in a **compact matrix form**, which makes the mathematics and computations much cleaner.
+
+Instead of writing many separate equations, we represent the model using matrices.
+
+---
+
+# Standard Regression Form
+
+For each observation \(i\):
+
+\[
+y_i = \beta_0 + \beta_1 x_{i1} + \beta_2 x_{i2} + \dots + \beta_p x_{ip} + \epsilon_i
+\]
+
+Where:
+
+- \(y_i\) = response variable
+- \(x_{ij}\) = predictor \(j\) for observation \(i\)
+- \(\beta_j\) = regression coefficients
+- \(\epsilon_i\) = error term
+
+If we have **n observations**, we get **n such equations**.
+
+---
+
+# Writing the Model in Matrix Form
+
+We can rewrite all equations together as:
+
+\[
+Y = X\beta + \epsilon
+\]
+
+This is the **matrix representation of linear regression**.
+
+---
+
+# Components of the Matrix Equation
+
+### Response Vector
+
+\[
+Y =
+\begin{bmatrix}
+y_1 \\
+y_2 \\
+\vdots \\
+y_n
+\end{bmatrix}
+\]
+
+Dimensions:
+
+\[
+(n \times 1)
+\]
+
+This contains all observed response values.
+
+---
+
+### Design Matrix
+
+\[
+X =
+\begin{bmatrix}
+1 & x_{11} & x_{12} & \dots & x_{1p} \\
+1 & x_{21} & x_{22} & \dots & x_{2p} \\
+\vdots & \vdots & \vdots & \dots & \vdots \\
+1 & x_{n1} & x_{n2} & \dots & x_{np}
+\end{bmatrix}
+\]
+
+Dimensions:
+
+\[
+(n \times (p+1))
+\]
+
+Important points:
+
+- Each **row = one observation**
+- Each **column = one predictor**
+- The **first column of 1s represents the intercept \( \beta_0 \)**
+
+---
+
+### Coefficient Vector
+
+\[
+\beta =
+\begin{bmatrix}
+\beta_0 \\
+\beta_1 \\
+\vdots \\
+\beta_p
+\end{bmatrix}
+\]
+
+Dimensions:
+
+\[
+((p+1) \times 1)
+\]
+
+These are the **unknown coefficients we want to estimate**.
+
+---
+
+### Error Vector
+
+\[
+\epsilon =
+\begin{bmatrix}
+\epsilon_1 \\
+\epsilon_2 \\
+\vdots \\
+\epsilon_n
+\end{bmatrix}
+\]
+
+Dimensions:
+
+\[
+(n \times 1)
+\]
+
+These represent **random noise in the data**.
+
+---
+
+# Final Matrix Equation
+
+\[
+Y = X\beta + \epsilon
+\]
+
+Dimensions:
+
+| Matrix | Size |
+|------|------|
+| \(Y\) | \(n \times 1\) |
+| \(X\) | \(n \times (p+1)\) |
+| \(\beta\) | \((p+1) \times 1\) |
+| \(\epsilon\) | \(n \times 1\) |
+
+---
+
+# Why This Form Is Important
+
+Writing regression in matrix form:
+
+- makes formulas **much more compact**
+- simplifies **mathematical derivations**
+- allows **efficient computation**
+- is used in **machine learning algorithms**
+
+For example, the least squares estimate becomes:
+
+\[
+\hat{\beta} = (X^T X)^{-1} X^T Y
+\]
+
+which is the **closed-form solution for linear regression**.
+
+---
+
+# Key Idea
+
+The matrix equation
+
+\[
+Y = X\beta + \epsilon
+\]
+
+is simply a **compact way of writing all regression equations at once**.
+
+It represents the **same linear regression model**, but in a form that is easier to analyze and compute.
+
+## Least Squares Estimation (OLS)
+
+In linear regression, we estimate the coefficients by choosing values that make the model's predictions **as close as possible to the observed data**.
+
+This method is called **Least Squares Estimation**.
+
+---
+
+# Residual Sum of Squares (RSS)
+
+For a regression model:
+
+\[
+y_j = b_0 + b_1 x_{j1} + \dots + b_p x_{jp}
+\]
+
+the prediction error for observation \(j\) is:
+
+\[
+y_j - (b_0 + b_1 x_{j1} + \dots + b_p x_{jp})
+\]
+
+These errors are called **residuals**.
+
+To measure the total error of the model, we compute the **Residual Sum of Squares (RSS)**:
+
+\[
+RSS = \sum_{j=1}^{n} (y_j - b_0 - b_1x_{j1} - ... - b_px_{jp})^2
+\]
+
+In matrix form this becomes:
+
+\[
+RSS = (y - Xb)'(y - Xb)
+\]
+
+---
+
+# Goal of Least Squares
+
+We choose the coefficient vector \(b\) that **minimizes RSS**.
+
+When the design matrix \(X\) has **full rank**, the least squares estimate is:
+
+\[
+\hat{\beta} = (X'X)^{-1} X'y
+\]
+
+This is the **closed-form solution for linear regression**.
+
+---
+
+# Example
+
+Suppose we fit a simple regression model:
+
+\[
+Y = \beta_0 + \beta_1 X + \epsilon
+\]
+
+Data:
+
+| X | Y |
+|---|---|
+|0|1|
+|1|4|
+|2|3|
+|3|8|
+|4|9|
+
+---
+
+# Step 1: Construct the Design Matrix
+
+\[
+X =
+\begin{bmatrix}
+1 & 0 \\
+1 & 1 \\
+1 & 2 \\
+1 & 3 \\
+1 & 4
+\end{bmatrix}
+\]
+
+Response vector:
+
+\[
+y =
+\begin{bmatrix}
+1 \\
+4 \\
+3 \\
+8 \\
+9
+\end{bmatrix}
+\]
+
+---
+
+# Step 2: Compute \(X'X\)
+
+\[
+X'X =
+\begin{bmatrix}
+5 & 10 \\
+10 & 30
+\end{bmatrix}
+\]
+
+---
+
+# Step 3: Compute the Inverse
+
+For a matrix
+
+\[
+A =
+\begin{bmatrix}
+a_{11} & a_{12} \\
+a_{21} & a_{22}
+\end{bmatrix}
+\]
+
+the inverse is:
+
+\[
+A^{-1} =
+\frac{1}{|A|}
+\begin{bmatrix}
+a_{22} & -a_{12} \\
+-a_{21} & a_{11}
+\end{bmatrix}
+\]
+
+Using this:
+
+\[
+(X'X)^{-1} =
+\begin{bmatrix}
+3/5 & -1/5 \\
+-1/5 & 1/10
+\end{bmatrix}
+\]
+
+---
+
+# Step 4: Compute \(X'Y\)
+
+\[
+X'Y =
+\begin{bmatrix}
+25 \\
+70
+\end{bmatrix}
+\]
+
+---
+
+# Step 5: Compute the Coefficient Estimates
+
+\[
+\hat{\beta} = (X'X)^{-1}X'Y
+\]
+
+\[
+\hat{\beta} =
+\begin{bmatrix}
+1 \\
+2
+\end{bmatrix}
+\]
+
+So the estimated regression line is:
+
+\[
+\hat{Y} = 1 + 2X
+\]
+
+---
+
+# Interpretation
+
+- **Intercept (\(\beta_0 = 1\))**  
+  When \(X = 0\), the predicted value of \(Y\) is **1**.
+
+- **Slope (\(\beta_1 = 2\))**  
+  For every increase of **1 unit in \(X\)**, \(Y\) increases by **2 units**.
+
+---
+
+# Key Idea
+
+Least Squares Estimation finds the coefficients that:
+
+- minimize the **sum of squared residuals**
+- provide the **best fitting regression line**
+- can be computed using the matrix formula:
+
+\[
+\hat{\beta} = (X'X)^{-1}X'Y
+\]
+
+This method is the foundation of **linear regression in statistics and machine learning**.
+
+## Inference in Linear Regression
+
+After fitting a regression model, we want to answer important statistical questions about the predictors.
+
+Inference helps us determine:
+
+- Whether the predictors are **useful**
+- Whether individual predictors have **significant effects**
+- Whether there is a **linear relationship between the predictors and the response**
+
+---
+
+# 1. Testing if the Model is Useful (F-test)
+
+We first test whether **at least one predictor is useful** in explaining the response variable.
+
+### Hypotheses
+
+Null hypothesis:
+
+H₀ : β₁ = β₂ = ... = βₚ = 0  
+
+Alternative hypothesis:
+
+H₁ : At least one βⱼ ≠ 0
+
+Meaning:
+
+- Under **H₀**, none of the predictors affect Y.
+- Under **H₁**, at least one predictor is related to Y.
+
+---
+
+# F-Test Statistic
+
+The test statistic is
+
+F = ((TSS − RSS) / p) / (RSS / (n − p − 1))
+
+where:
+
+- **RSS (Residual Sum of Squares)**  
+  RSS = Σ (yᵢ − ŷᵢ)²  
+
+- **TSS (Total Sum of Squares)**  
+  TSS = Σ (yᵢ − ȳ)²  
+
+Interpretation:
+
+- TSS measures **total variability in the data**
+- RSS measures **unexplained variability after fitting the model**
+
+If the model explains the data well, **RSS will be much smaller than TSS**, making the F-statistic large.
+
+---
+
+# Distribution of the Test Statistic
+
+Under the null hypothesis:
+
+F ~ F(p, n − p − 1)
+
+where:
+
+- **p** = number of predictors
+- **n − p − 1** = residual degrees of freedom
+
+Decision rule:
+
+- If **F is large**, reject H₀
+- This means the regression model is **statistically significant**
+
+---
+
+# 2. Testing Individual Predictors (t-test)
+
+We can also test whether **a specific coefficient βⱼ is useful**.
+
+### Hypotheses
+
+H₀ : βⱼ = 0  
+
+H₁ : βⱼ ≠ 0
+
+Meaning:
+
+- Under **H₀**, predictor Xⱼ has no effect on Y.
+- Under **H₁**, predictor Xⱼ significantly affects Y.
+
+---
+
+# t-Test Statistic
+
+The test statistic is
+
+t = (β̂ⱼ − 0) / SE(β̂ⱼ)
+
+where:
+
+- **β̂ⱼ** = estimated coefficient
+- **SE(β̂ⱼ)** = standard error of the coefficient
+
+---
+
+# Distribution of the t-Statistic
+
+t ~ t(n − p − 1)
+
+where:
+
+- **n − p − 1** is the degrees of freedom.
+
+If the **absolute value of t is large**, we reject the null hypothesis.
+
+---
+
+# Standard Error of the Coefficient
+
+The standard error of the coefficient is:
+
+SE(β̂ⱼ) = √[(RSS / (n − p − 1)) × ((XᵀX)⁻¹)ⱼⱼ]
+
+Where:
+
+- **RSS / (n − p − 1)** estimates the noise variance
+- **(XᵀX)⁻¹ⱼⱼ** is the j-th diagonal element of the matrix (XᵀX)⁻¹
+
+This measures the **uncertainty in estimating βⱼ**.
+
+---
+
+# Key Idea
+
+Inference in regression allows us to determine:
+
+1. Whether the **entire regression model is useful** (F-test)
+2. Whether **individual predictors are significant** (t-test)
+3. How **confident we are in the estimated coefficients**
+
+These tests help determine which variables should remain in the model.
+
+## R² and Adjusted R²
+
+In linear regression, we want to measure **how well the model explains the variability in the response variable**.
+
+Two commonly used measures are:
+
+- **R² (Coefficient of Determination)**
+- **Adjusted R²**
+
+---
+
+# 1. R² (Coefficient of Determination)
+
+R² measures the **proportion of the total variation in the response variable that is explained by the regression model**.
+
+\[
+R^2 = \frac{\sum_{i=1}^{n}(\hat{y}_i - \bar{y})^2}{\sum_{i=1}^{n}(y_i - \bar{y})^2}
+\]
+
+Equivalent form:
+
+\[
+R^2 = 1 - \frac{RSS}{TSS}
+\]
+
+Where:
+
+- **RSS (Residual Sum of Squares)**  
+\[
+RSS = \sum (y_i - \hat{y}_i)^2
+\]
+
+- **TSS (Total Sum of Squares)**  
+\[
+TSS = \sum (y_i - \bar{y})^2
+\]
+
+---
+
+# Interpretation of R²
+
+\[
+R^2 \in [0,1]
+\]
+
+- **R² = 1** → perfect fit (predictions exactly match data)
+- **R² = 0** → predictors explain none of the variation in Y
+
+Example:
+
+If
+
+\[
+R^2 = 0.80
+\]
+
+then **80% of the variability in Y is explained by the predictors**.
+
+---
+
+# Important Property of R²
+
+R² **never decreases when a new predictor is added** to the model.
+
+Even if the predictor has **no real predictive power**, R² may still increase.
+
+This means R² can sometimes **favor overly complex models**.
+
+---
+
+# 2. Adjusted R²
+
+Adjusted R² corrects this issue by **penalizing models that include unnecessary predictors**.
+
+\[
+R^2_{adj} =
+1 -
+\frac{RSS/(n-r-1)}{TSS/(n-1)}
+\]
+
+Where:
+
+- **n** = number of observations
+- **r** = number of predictors
+
+---
+
+# Why Adjusted R² is Useful
+
+Unlike R²:
+
+- Adjusted R² **can decrease** when irrelevant predictors are added.
+- It rewards models that improve prediction **while penalizing unnecessary complexity**.
+
+This makes it **more reliable for comparing models with different numbers of predictors**.
+
+---
+
+# Residual Mean Square
+
+The quantity
+
+\[
+\frac{RSS}{n-r-1}
+\]
+
+is called the **Residual Mean Square (RMS)** or **estimated variance of the errors**.
+
+If adding a predictor **reduces this quantity**, then Adjusted R² will increase.
+
+---
+
+# Key Takeaway
+
+| Measure | What it tells us |
+|-------|-------|
+| **R²** | Proportion of variance in Y explained by the model |
+| **Adjusted R²** | Similar to R² but penalizes unnecessary predictors |
+
+In practice:
+
+- **R² measures model fit**
+- **Adjusted R² helps choose better models**
+
+## Estimating the Regression Function at \(x_0\)
+
+In linear regression, we often want to estimate the **expected value of the response variable** for a specific set of predictor values.
+
+Suppose we want to estimate the expected response when the predictors take the value:
+
+\[
+x_0 = (1, x_{01}, x_{02}, ..., x_{0p})
+\]
+
+This represents a **new observation** with predictor values \(x_{01}, x_{02}, ..., x_{0p}\).
+
+---
+
+# Predicted Mean Response
+
+Using the estimated regression coefficients, the predicted value at \(x_0\) is:
+
+\[
+\hat{y}_0 = x_0' \hat{\beta}
+\]
+
+which expands to:
+
+\[
+\hat{y}_0 = \hat{\beta}_0 + \hat{\beta}_1 x_{01} + ... + \hat{\beta}_p x_{0p}
+\]
+
+This is the **estimated mean response**:
+
+\[
+E[Y | x_0]
+\]
+
+In other words, it estimates the **average value of \(Y\)** for observations with predictors equal to \(x_0\).
+
+---
+
+# Assumptions
+
+To construct inference, we assume:
+
+- The errors \( \epsilon_1, ..., \epsilon_n \) are **independent**
+- The errors follow a **normal distribution**
+
+\[
+\epsilon_i \sim N(0, \sigma^2)
+\]
+
+---
+
+# Confidence Interval for the Mean Response
+
+A \(100(1-\alpha)\%\) confidence interval for the expected response \(E[Y | x_0]\) is:
+
+\[
+x_0' \hat{\beta} \pm
+t_{n-p-1}\left(\frac{\alpha}{2}\right)
+\sqrt{(x_0'(X'X)^{-1}x_0)s^2}
+\]
+
+Where:
+
+- \(t_{n-p-1}\) = critical value from the **t-distribution**
+- \(n\) = number of observations
+- \(p\) = number of predictors
+- \(s^2\) = estimated variance of the residuals
+
+---
+
+# Residual Variance Estimate
+
+The residual variance estimate is:
+
+\[
+s^2 =
+\frac{1}{n-p-1}
+\sum_{i=1}^{n}(y_i - \hat{y}_i)^2
+\]
+
+This measures the **average squared error of the regression model**.
+
+---
+
+# Interpretation
+
+The confidence interval gives a **range of plausible values for the true mean response** at the predictor value \(x_0\).
+
+Example interpretation:
+
+If we compute a **95% confidence interval**, we are **95% confident that the true expected value of \(Y\) at \(x_0\)** lies within that interval.
+
+---
+
+# Key Idea
+
+At a new predictor value \(x_0\):
+
+- \(x_0' \hat{\beta}\) gives the **estimated mean response**
+- The confidence interval quantifies the **uncertainty in this estimate**
+
+This helps us understand **how reliable our prediction is for the average response at that point**.
+
+## Attributes of Data (Types of Data)
+
+Data can be categorized into different **types of attributes** depending on how the values represent information.  
+Understanding these types is important because it determines **what statistical operations or machine learning methods can be applied**.
+
+---
+
+## 1. Nominal Data
+
+Nominal attributes represent **categories that have no natural ordering**.  
+They are simply **labels or names** used to distinguish different groups.
+
+**Examples**
+- ID numbers
+- Eye color
+- Postal codes
+- Country names
+
+**Key Properties**
+- No natural ordering
+- Arithmetic operations are not meaningful
+- Only comparisons such as **equal / not equal** are possible
+
+Example:
+
+```
+Eye Color = {Blue, Brown, Green}
+```
+
+There is **no ranking** between these categories.
+
+---
+
+## 2. Ordinal Data
+
+Ordinal attributes represent **categories that have a meaningful order or ranking**, but the **exact differences between levels are not known**.
+
+**Examples**
+- Rankings (1st, 2nd, 3rd)
+- Grades (A, B, C)
+- Customer satisfaction (Low, Medium, High)
+- Height categories {short, medium, tall}
+
+**Key Properties**
+- Categories have an **order**
+- Differences between values are **not necessarily equal**
+
+Example:
+
+```
+Customer Satisfaction = {Low < Medium < High}
+```
+
+We know the order, but the difference between levels is not precisely measurable.
+
+---
+
+## 3. Binary Data
+
+Binary attributes are a **special type of nominal attribute** with **only two possible values**.
+
+**Examples**
+- Yes / No
+- True / False
+- 0 / 1
+- Pass / Fail
+
+Binary data is often referred to as **Boolean data**.
+
+Example:
+
+```
+Purchased Product = {0, 1}
+```
+
+---
+
+## 4. Interval-Scaled Data
+
+Interval data consists of **numeric values measured on a scale with equal spacing between values**, but there is **no true zero point**.
+
+**Examples**
+- Temperature (°C or °F)
+- Calendar dates
+- Time of day
+
+**Key Properties**
+- Differences between values are meaningful
+- Ratios are not meaningful
+
+Example:
+
+```
+10°C is NOT twice as warm as 5°C
+```
+
+Even though subtraction works, ratios do not.
+
+---
+
+## 5. Ratio-Scaled Data
+
+Ratio data is numeric data that has a **true zero point**, meaning the value zero represents the **absence of the quantity**.
+
+**Examples**
+- Height
+- Weight
+- Distance
+- Age
+- Income
+
+**Key Properties**
+- Equal intervals
+- True zero point exists
+- Ratios are meaningful
+
+Example:
+
+```
+20 kg is twice as heavy as 10 kg
+```
+
+---
+
+## Summary Table
+
+| Data Type | Ordered | Equal Intervals | True Zero |
+|-----------|--------|----------------|----------|
+| Nominal   | ❌ | ❌ | ❌ |
+| Ordinal   | ✔ | ❌ | ❌ |
+| Binary    | ❌ | ❌ | ❌ |
+| Interval  | ✔ | ✔ | ❌ |
+| Ratio     | ✔ | ✔ | ✔ |
+
+---
+
+## Key Idea
+
+Different data types determine **what analysis methods can be used**:
+
+- **Nominal / Binary** → classification, categorical analysis  
+- **Ordinal** → ranking-based analysis  
+- **Interval / Ratio** → regression, statistical modeling, machine learning
+
+## Data Quality
+
+Data quality refers to **how accurate, complete, consistent, and reliable a dataset is**.  
+Poor data quality can significantly reduce the performance of statistical models and machine learning algorithms.
+
+When working with data, we typically ask three important questions:
+
+- What kinds of **data quality problems** exist?
+- How can we **detect these problems** in the dataset?
+- What actions can we **take to fix or reduce these issues**?
+
+---
+
+## Common Data Quality Problems
+
+### 1. Noise and Outliers
+
+**Noise** refers to random errors or variability in the data that do not represent the true underlying pattern.
+
+**Outliers** are data points that are **significantly different from other observations**.
+
+Examples:
+- Incorrect measurements
+- Data entry errors
+- Sensor errors
+
+Example:
+
+```
+Age values: 21, 22, 23, 24, 150
+```
+
+The value **150** is likely an outlier.
+
+**Possible solutions**
+- Detect using statistical methods (z-score, IQR)
+- Remove or cap extreme values
+- Smooth noisy data
+
+---
+
+### 2. Missing Values
+
+Missing values occur when **data entries are not recorded or unavailable**.
+
+Example:
+
+```
+Age: 21, 22, NA, 24, 25
+```
+
+**Possible solutions**
+- Remove rows with missing values
+- Replace with mean/median
+- Use model-based imputation
+- Use interpolation for time-series data
+
+---
+
+### 3. Duplicate Data
+
+Duplicate data occurs when **the same record appears multiple times** in the dataset.
+
+Example:
+
+```
+ID   Name
+101  Alice
+102  Bob
+101  Alice
+```
+
+Duplicates can lead to **biased analysis and incorrect conclusions**.
+
+**Possible solutions**
+- Identify duplicates using unique identifiers
+- Remove repeated rows
+- Aggregate duplicate entries when appropriate
+
+---
+
+## Why Data Quality Matters
+
+Poor data quality can lead to:
+
+- Incorrect statistical conclusions
+- Poor machine learning model performance
+- Misleading predictions
+- Increased computational cost
+
+High-quality data improves:
+
+- Model accuracy
+- Reliability of results
+- Decision-making
+
+---
+
+## Key Idea
+
+Before performing **data analysis, regression, or machine learning**, data should always be **cleaned and validated** to ensure good data quality.
+
+
+## Indicator Variables (Dummy Variables)
+
+In regression models, some predictors are **qualitative (categorical)** rather than **quantitative (numeric)**.
+
+These variables take **discrete categories instead of numeric values**.
+
+Examples of categorical variables:
+- Gender
+- Education level
+- Product type
+- Region
+
+These are also called:
+
+- **Categorical predictors**
+- **Factor variables**
+
+---
+
+# Indicator Variables
+
+To include categorical variables in regression models, we convert them into **indicator variables (dummy variables)**.
+
+An indicator variable takes values:
+
+```
+1 → if the condition is true  
+0 → if the condition is false
+```
+
+---
+
+# Example: Gender Predictor
+
+Suppose we want to study the difference in **credit card balance between males and females**.
+
+We define a new variable:
+
+```
+x_i = 1   if the i-th person is female
+x_i = 0   if the i-th person is male
+```
+
+---
+
+# Resulting Regression Model
+
+The regression model becomes:
+
+\[
+y_i = \beta_0 + \beta_1 x_i + \epsilon_i
+\]
+
+Interpretation:
+
+If the person is **male (xᵢ = 0)**
+
+```
+y_i = β₀ + ε_i
+```
+
+If the person is **female (xᵢ = 1)**
+
+```
+y_i = β₀ + β₁ + ε_i
+```
+
+---
+
+# Interpretation of Coefficients
+
+- **β₀** = average response for the **baseline category (male)**  
+- **β₁** = difference between **female and male average response**
+
+Thus, β₁ measures the **effect of the category change**.
+
+---
+
+# Categorical Variables with Multiple Levels
+
+If a categorical variable has **k categories**, we only include:
+
+```
+k - 1 indicator variables
+```
+
+The remaining category is called the **baseline (reference category)**.
+
+---
+
+# Example: 3 Categories
+
+Suppose a categorical variable \(x\) has three levels:
+
+```
+A, B, C
+```
+
+We create two indicator variables:
+
+```
+x_A = 1 if x is A
+x_A = 0 otherwise
+
+x_B = 1 if x is B
+x_B = 0 otherwise
+```
+
+If:
+
+```
+x = C
+```
+
+then
+
+```
+x_A = 0
+x_B = 0
+```
+
+So **C becomes the baseline category**.
+
+---
+
+# Interpretation of Coefficients
+
+- **β_A** represents the difference between **A and baseline C**
+- **β_B** represents the difference between **B and baseline C**
+
+These differences are called **contrasts**.
+
+---
+
+# Key Idea
+
+Categorical variables cannot be used directly in regression models.  
+They must first be converted into **indicator (dummy) variables** so that the regression model can interpret category differences.
+
+## Missing Values
+
+Missing values occur when **some data entries are not recorded or unavailable** in a dataset.  
+Handling missing values properly is important because they can affect **data analysis, statistical inference, and machine learning models**.
+
+---
+
+## Reasons for Missing Values
+
+Missing data can occur for several reasons:
+
+### 1. Information Not Collected
+Sometimes information is not recorded because individuals choose not to provide it.
+
+Example:
+- People may refuse to report **age**
+- People may refuse to report **income or weight**
+
+---
+
+### 2. Attribute Not Applicable
+
+Some attributes may **not apply to every observation**.
+
+Example:
+- **Annual income** may not apply to **children**
+- **Pregnancy status** does not apply to males
+
+In such cases, the missing value is **structural**, meaning the variable is simply not relevant for that observation.
+
+---
+
+## Methods for Handling Missing Values
+
+There are several common approaches to dealing with missing data.
+
+### 1. Eliminate Data Objects
+
+Remove observations (rows) that contain missing values.
+
+Example:
+
+```
+Age   Income
+25    50000
+NA    42000  ← remove this row
+30    60000
+```
+
+**Advantages**
+- Simple to implement
+
+**Disadvantages**
+- May significantly reduce dataset size
+- May introduce bias
+
+---
+
+### 2. Estimate Missing Values (Imputation)
+
+Estimate the missing value using statistical techniques.
+
+Common methods include:
+
+- Mean imputation
+- Median imputation
+- Regression imputation
+- Machine learning based imputation
+
+Example:
+
+```
+Age values: 20, 22, NA, 24
+
+Mean age = 22
+
+Replace NA with 22
+```
+
+---
+
+### 3. Ignore Missing Values During Analysis
+
+Some statistical methods can **handle missing values automatically** by ignoring them when computing results.
+
+Example:
+- Pairwise deletion
+- Algorithms that tolerate missing entries
+
+---
+
+### 4. Replace with All Possible Values
+
+Instead of selecting one replacement value, we may consider **multiple possible values** weighted by their probabilities.
+
+This is used in advanced approaches such as:
+
+- Multiple imputation
+- Probabilistic modeling
+
+---
+
+## Key Idea
+
+Missing data must be handled carefully because it can:
+
+- Reduce model accuracy
+- Introduce bias
+- Distort statistical results
+
+Proper **data preprocessing and cleaning** are essential before performing analysis or building models.
+
+## Duplicate Data
+
+Duplicate data occurs when a dataset contains **multiple records that represent the same data object**.  
+These duplicates may be **exact duplicates** or **near duplicates** (very similar records).
+
+Duplicate data is a common problem, especially when **combining data from multiple sources**.
+
+---
+
+## Why Duplicate Data Occurs
+
+Duplicates often appear during:
+
+- Data integration from **heterogeneous data sources**
+- Manual **data entry errors**
+- Multiple records being created for the **same entity**
+- Data collection systems without **unique identifiers**
+
+---
+
+## Example
+
+A common example is when the **same person appears multiple times** in a dataset.
+
+Example:
+
+```
+Name        Email
+Alice       alice@email.com
+Alice       alice.work@email.com
+```
+
+Both rows may represent **the same person**, but appear as two separate records.
+
+---
+
+## Types of Duplicate Data
+
+### Exact Duplicates
+Rows that are **identical across all attributes**.
+
+Example:
+
+```
+ID   Name   Age
+101  Alice  25
+101  Alice  25
+```
+
+---
+
+### Near Duplicates
+
+Rows that are **not identical but represent the same object**.
+
+Example:
+
+```
+Alice Smith
+A. Smith
+Alice S.
+```
+
+These may refer to the **same individual** but are written differently.
+
+---
+
+## Problems Caused by Duplicate Data
+
+Duplicate data can lead to:
+
+- **Biased statistical results**
+- Incorrect **model training**
+- Inflated dataset size
+- Misleading insights
+
+For example, duplicates may cause certain observations to **appear more important than they actually are**.
+
+---
+
+## Handling Duplicate Data
+
+The process of resolving duplicates is part of **data cleaning**.
+
+Common approaches include:
+
+### 1. Removing Exact Duplicates
+
+Identify rows that are exactly the same and remove repeated entries.
+
+---
+
+### 2. Record Matching (Entity Resolution)
+
+Identify records that represent the **same real-world entity** using similarity measures.
+
+Techniques include:
+- String similarity
+- Fuzzy matching
+- Machine learning methods
+
+---
+
+### 3. Using Unique Identifiers
+
+Assign **unique IDs** to each entity to prevent duplicates.
+
+Example:
+
+```
+Customer_ID
+Employee_ID
+Student_ID
+```
+
+---
+
+## Key Idea
+
+Duplicate data must be detected and handled during **data preprocessing** to ensure reliable analysis and accurate modeling.
 
