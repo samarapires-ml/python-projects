@@ -3392,3 +3392,1002 @@ Student_ID
 
 Duplicate data must be detected and handled during **data preprocessing** to ensure reliable analysis and accurate modeling.
 
+## Why Model Selection
+
+In many real-world situations, we may have **many possible predictors (features)** available for building a regression model.  
+Sometimes the number of predictors can even be **larger than the number of observations**:
+
+```
+p > n
+```
+
+Using all available predictors may lead to **complex, inefficient, or poorly performing models**.  
+Therefore, we perform **model selection** to choose only the **most relevant predictors**.
+
+---
+
+## Occam's Razor (Principle of Parsimony)
+
+Model selection follows the principle known as **Occam's Razor**, which states:
+
+> Among competing models, the simplest model that explains the data well should be preferred.
+
+This principle is also known as the **law of parsimony** or **economy**.
+
+In practice, this means:
+
+- Include only **important predictors**
+- Remove **irrelevant or redundant variables**
+
+---
+
+## Benefits of Model Selection
+
+### 1. Simpler Models
+
+Removing unnecessary predictors makes the model:
+
+- **Easier to interpret**
+- **More understandable**
+
+---
+
+### 2. Reduced Prediction Cost
+
+Fewer variables means:
+
+- Less data collection
+- Lower computational cost
+- Faster predictions
+
+---
+
+### 3. Improved Prediction Accuracy
+
+Including irrelevant predictors may introduce **noise** and reduce predictive performance.
+
+Selecting the right predictors can **improve the accuracy of predictions for new data**.
+
+---
+
+## Bias–Variance Tradeoff
+
+Prediction error can be decomposed as:
+
+```
+MSE(prediction) = Bias(prediction)^2 + Variance(prediction)
+```
+
+Where:
+
+- **Bias** measures error due to overly simple models
+- **Variance** measures error due to model sensitivity to data fluctuations
+
+---
+
+## Tradeoff in Variable Selection
+
+Model selection aims to **balance bias and variance**:
+
+- Too few predictors → **high bias**
+- Too many predictors → **high variance**
+
+A good model finds the **optimal balance between bias and variance**.
+
+---
+
+## Key Idea
+
+Model selection helps identify a model that is:
+
+- **Simple**
+- **interpretable**
+- **cost-efficient**
+- **accurate for prediction**
+
+## Why Consider Alternatives to Least Squares in Linear Regression?
+
+Ordinary Least Squares (OLS) is the most common method used to estimate the parameters of a linear regression model. However, in some situations it may not perform well, and alternative methods may be preferred.
+
+Two important reasons for considering alternatives are **prediction accuracy** and **model interpretability**.
+
+---
+
+## 1. Prediction Accuracy
+
+When the number of predictors is large relative to the number of observations:
+
+```
+p > n
+```
+
+the least squares model may have **high variance** and may overfit the data.
+
+Overfitting occurs when the model learns the training data too closely, including noise, which leads to **poor performance on new unseen data**.
+
+Alternative approaches can help **control variance** and improve prediction accuracy.
+
+---
+
+## 2. Model Interpretability
+
+In many cases, not all predictors are useful. Some variables may have **little or no influence on the response variable**.
+
+Alternative methods can improve interpretability by:
+
+- Removing irrelevant predictors
+- Setting some coefficients equal to zero
+
+This process is known as **feature selection**.
+
+A model with fewer predictors is:
+
+- Easier to understand
+- Easier to explain
+- More practical in real-world applications
+
+---
+
+## Feature Selection
+
+Feature selection methods automatically determine which predictors should remain in the model and which should be removed.
+
+The goal is to build a model that is:
+
+- Accurate
+- Interpretable
+- Efficient
+
+Examples of approaches that help achieve this include:
+
+- Subset selection
+- Regularization methods
+- Dimension reduction techniques
+
+---
+
+## Key Idea
+
+Alternatives to least squares are used to:
+
+- Improve **prediction accuracy**
+- Reduce **model complexity**
+- Increase **interpretability**
+
+These methods help identify the **most important predictors** while controlling model variance.
+
+## How to Select a Model in Linear Regression
+
+When building a regression model, we often have many possible predictors available.  
+Model selection methods help us determine **which predictors should be included in the final model**.
+
+There are three main approaches used for selecting models in linear regression:
+
+- Subset Selection
+- Shrinkage (Regularization)
+- Dimension Reduction
+
+---
+
+## 1. Subset Selection
+
+Subset selection involves identifying a **subset of the available predictors** that are most strongly related to the response variable.
+
+Instead of using all predictors, we fit a regression model using **only the selected variables**.
+
+Two common subset selection methods are:
+
+- **Best Subset Selection**
+- **Stepwise Selection**
+
+### Best Subset Selection
+This method evaluates **all possible combinations of predictors** and chooses the model that performs best according to some criterion.
+
+### Stepwise Selection
+This method builds the model **iteratively** by either:
+
+- **Forward selection** → start with no predictors and add them one at a time  
+- **Backward elimination** → start with all predictors and remove them one at a time  
+
+Subset selection methods help simplify the model by removing **irrelevant predictors**.
+
+---
+
+## 2. Shrinkage (Regularization)
+
+Shrinkage methods include **all predictors in the model**, but they **shrink the estimated coefficients toward zero**.
+
+This means the model penalizes large coefficient values, which helps reduce **model variance** and prevent **overfitting**.
+
+Shrinkage is also known as **regularization**.
+
+Benefits of shrinkage methods:
+
+- Reduce variance
+- Improve prediction accuracy
+- Sometimes automatically perform variable selection
+
+Examples of shrinkage methods include:
+
+- **Ridge Regression**
+- **Lasso Regression**
+
+---
+
+## 3. Dimension Reduction
+
+Dimension reduction methods transform the original predictors into a **smaller set of new variables**.
+
+These new variables are **linear combinations of the original predictors**.
+
+Instead of using all \(p\) predictors, we create a smaller number of variables:
+
+```
+M < p
+```
+
+These new variables are then used as predictors in the regression model.
+
+Benefits of dimension reduction:
+
+- Reduces model complexity
+- Handles situations where \(p\) is large
+- Helps avoid multicollinearity problems
+
+Examples of dimension reduction methods include:
+
+- **Principal Component Regression (PCR)**
+- **Partial Least Squares (PLS)**
+
+---
+
+## Key Idea
+
+Model selection techniques aim to build a regression model that is:
+
+- **Accurate**
+- **Simple**
+- **Easy to interpret**
+
+They help identify the most useful predictors while avoiding unnecessary complexity.
+
+## Best Subset Selection
+
+Best subset selection is a model selection technique where we evaluate **all possible combinations of predictors** and choose the model that performs best according to a chosen evaluation criterion.
+
+---
+
+## How It Works
+
+If we have **p predictors**, then the total number of possible regression models is:
+
+```
+2^p - 1
+```
+
+Each model represents a **different subset of predictors**.
+
+Example:
+
+If we have predictors:
+
+```
+X1, X2, X3
+```
+
+Possible models include:
+
+```
+X1
+X2
+X3
+X1 + X2
+X1 + X3
+X2 + X3
+X1 + X2 + X3
+```
+
+Each model is fitted, and we select the **best one based on a selection criterion**.
+
+---
+
+## Model Selection Criteria
+
+Several criteria can be used to determine the best model, including:
+
+- **Adjusted R²**
+- **Cross-validated prediction error**
+- **Mallow's Cp**
+- **AIC (Akaike Information Criterion)**
+- **BIC (Bayesian Information Criterion)**
+
+---
+
+## Adjusted R²
+
+Adjusted R² modifies the standard R² to account for the **number of predictors in the model**.
+
+The formula is:
+
+```
+R²_adj = 1 - (SSE / (n - q - 1)) / (SST / (n - 1))
+```
+
+Where:
+
+- **SSE** = Sum of Squared Errors
+- **SST** = Total Sum of Squares
+- **n** = number of observations
+- **q** = number of predictors in the model
+
+---
+
+## Adjusted R² Selection Rule
+
+To choose the best model using adjusted R²:
+
+```
+Select the model that maximizes Adjusted R².
+```
+
+Adjusted R² penalizes models that include **too many unnecessary predictors**, helping avoid overly complex models.
+
+---
+
+## Why Not Use Regular R²?
+
+Regular R² **always increases when more predictors are added**, even if those predictors are irrelevant.
+
+This means R² tends to favor **larger models**, which may overfit the data.
+
+Adjusted R² solves this problem by **penalizing model complexity**, making it more suitable for model selection.
+
+---
+
+## Key Idea
+
+Best subset selection evaluates **every possible model** and chooses the best one according to a selection criterion such as **Adjusted R², AIC, BIC, or cross-validation error**.
+
+## AIC Criterion (Akaike Information Criterion)
+
+The **Akaike Information Criterion (AIC)** is a commonly used metric for **model selection**.  
+It helps choose a model that achieves a good balance between **model fit** and **model complexity**.
+
+---
+
+## AIC Formula
+
+The AIC statistic for a model is defined as:
+
+```
+AIC = -2 l(y) + 2(q + 1)
+```
+
+For linear regression models, this can also be written as:
+
+```
+AIC = n log(SSE / n) + 2(q + 1)
+```
+
+Where:
+
+- **l(y)** = log-likelihood of the observed data  
+- **n** = number of observations  
+- **SSE** = sum of squared errors  
+- **q** = number of predictors in the model  
+
+---
+
+## Understanding the AIC Formula
+
+The AIC formula contains **two main components**.
+
+### 1. Model Fit Term
+
+```
+n log(SSE / n)
+```
+
+This part measures **how well the model fits the data**.
+
+- Smaller SSE → better model fit
+- This term **decreases when the model fits the data better**
+
+---
+
+### 2. Model Complexity Penalty
+
+```
+2(q + 1)
+```
+
+This part penalizes models with **too many predictors**.
+
+- As the number of predictors **q increases**, this penalty increases
+- This helps prevent **overfitting**
+
+---
+
+## Tradeoff in AIC
+
+AIC balances two goals:
+
+- **Good model fit**
+- **Simple model structure**
+
+Adding predictors usually **improves model fit**, but it also **increases the penalty term**.
+
+Because of this tradeoff, AIC **does not always decrease when more predictors are added**.
+
+---
+
+## AIC Model Selection Rule
+
+To select the best model:
+
+```
+Choose the model with the smallest AIC value.
+```
+
+Lower AIC indicates a **better balance between fit and complexity**.
+
+---
+
+## Key Idea
+
+AIC helps identify a regression model that:
+
+- Fits the data well
+- Avoids unnecessary predictors
+- Reduces the risk of overfitting
+```
+## BIC Criterion (Bayesian Information Criterion)
+
+The **Bayesian Information Criterion (BIC)** is another method used for **model selection** in regression.  
+Like AIC, BIC helps choose a model that balances **goodness of fit** and **model complexity**.
+
+---
+
+## BIC Formula
+
+The BIC statistic for a model is defined as:
+
+```
+BIC = -2 l(y) + log(n)(q + 1)
+```
+
+For linear regression models, this can be written as:
+
+```
+BIC = n log(SSE / n) + log(n)(q + 1)
+```
+
+Where:
+
+- **l(y)** = log-likelihood of the observed data  
+- **n** = number of observations  
+- **SSE** = sum of squared errors  
+- **q** = number of predictors in the model  
+
+---
+
+## Understanding the BIC Formula
+
+Similar to AIC, BIC contains **two components**.
+
+### 1. Model Fit Term
+
+```
+n log(SSE / n)
+```
+
+This term measures how well the model fits the data.
+
+- Smaller SSE → better fit
+- This term decreases as model fit improves
+
+---
+
+### 2. Model Complexity Penalty
+
+```
+log(n)(q + 1)
+```
+
+This term penalizes models that include **too many predictors**.
+
+- As **q increases**, the penalty increases
+- Because **log(n)** grows with the sample size, BIC penalizes complexity **more strongly than AIC**
+
+---
+
+## BIC Model Selection Rule
+
+To select the best model:
+
+```
+Choose the model with the smallest BIC value.
+```
+
+The best model is the one that achieves a **good fit while remaining simple**.
+
+---
+
+## Difference Between AIC and BIC
+
+The main difference between AIC and BIC lies in the **penalty term**.
+
+| Criterion | Penalty Term |
+|----------|-------------|
+| AIC | 2(q + 1) |
+| BIC | log(n)(q + 1) |
+
+Because **log(n) is usually larger than 2**, BIC tends to penalize complex models more heavily.
+
+As a result:
+
+- **AIC** often selects slightly larger models
+- **BIC** tends to prefer simpler models
+
+---
+
+## Asymptotic Property
+
+As the number of observations **n → ∞**, the BIC criterion has the property that it can **consistently identify the true model**, while AIC does not guarantee this.
+
+---
+
+## Key Idea
+
+BIC is a model selection method that:
+
+- Balances model fit and model complexity
+- Penalizes large models more strongly than AIC
+- Selects the model with the **lowest BIC value**
+
+## Cross-Validation (CV)
+
+Cross-validation is a model evaluation technique used to estimate how well a model will perform on **new unseen data**.  
+The goal of cross-validation is to choose the model that **minimizes prediction (testing) error**.
+
+---
+
+## Basic Idea
+
+Instead of evaluating a model using the same data used for training, cross-validation repeatedly:
+
+1. Removes one observation from the dataset
+2. Fits the model using the remaining data
+3. Predicts the removed observation
+4. Measures the prediction error
+
+This process is repeated for **every observation in the dataset**.
+
+---
+
+## Leave-One-Out Cross-Validation (LOOCV)
+
+For each observation \(i = 1, ..., n\):
+
+1. Remove the **i-th observation** from the dataset.
+2. Fit the regression model using the remaining \(n-1\) observations.
+3. Let \(\hat{\beta}_{-i}\) denote the least squares estimate obtained without observation \(i\).
+4. Predict the removed value using:
+
+```
+ŷ₋ᵢ = X β̂₋ᵢ
+```
+
+The prediction error is then calculated for that observation.
+
+---
+
+## Cross-Validation Criterion
+
+The cross-validation score is computed as:
+
+```
+CV = Σ (yᵢ − ŷ₋ᵢ)²
+```
+
+The **best model** is the one that **minimizes the CV statistic** across all candidate models.
+
+---
+
+## Key Idea
+
+When predicting \(y_i\), the observation \(y_i\) is **not used to train the model**.  
+This means we are evaluating the model as if \(y_i\) were a **new observation**.
+
+This provides a more reliable estimate of **true prediction performance**.
+
+---
+
+## Simplified CV Formula
+
+For linear regression, the cross-validation statistic can be simplified to:
+
+```
+CV = Σ ( rᵢ / (1 − hᵢᵢ) )²
+```
+
+Where:
+
+- \(r_i\) = residual for observation \(i\)
+- \(h_{ii}\) = the \(i\)-th diagonal element of the **hat matrix**
+
+The hat matrix is defined as:
+
+```
+H = X (XᵀX)⁻¹ Xᵀ
+```
+
+---
+
+## Why Cross-Validation Is Useful
+
+Cross-validation helps:
+
+- Estimate **prediction error on unseen data**
+- Prevent **overfitting**
+- Compare multiple candidate models
+
+---
+
+## Key Takeaway
+
+Cross-validation selects the model that **performs best on new data**, not just the model that fits the training data best.
+
+## Mallow’s \(C_p\) Statistic
+
+Mallow’s \(C_p\) is a model selection statistic used to evaluate how well a regression model balances **model fit** and **model complexity**.
+
+It penalizes models that include **too many predictors**, helping to avoid overfitting.
+
+---
+
+## Definition
+
+For a model with \(q\) predictors, the \(C_q\) statistic is defined as:
+
+```
+C_q = SSE(q) / [SSE(p) / (n - p - 1)] - (n - 2(q + 1))
+```
+
+Where:
+
+- **SSE(q)** = sum of squared errors for the model with \(q\) predictors  
+- **SSE(p)** = sum of squared errors for the full model (with all predictors)  
+- **n** = number of observations  
+- **p** = total number of predictors in the full model  
+- **q** = number of predictors in the candidate model  
+
+---
+
+## Interpretation
+
+If a model contains all the important predictors, then:
+
+```
+C_q ≈ q + 1
+```
+
+This means the value of \(C_q\) should be **close to the number of parameters in the model**.
+
+---
+
+## Model Selection Rule
+
+To choose the best model:
+
+- Select models where:
+
+```
+C_q ≈ q + 1
+```
+
+- Among those models, choose the one with **smaller q** (simpler model).
+
+This ensures the model is both:
+
+- **accurate**
+- **simple**
+
+---
+
+## Relation to AIC
+
+Under the assumption of **Gaussian errors**, the \(C_p\) criterion is **equivalent to AIC** for linear regression models.
+
+Both methods attempt to balance:
+
+- **goodness of fit**
+- **model complexity**
+
+---
+
+## Key Idea
+
+Mallow’s \(C_p\) helps identify models that:
+
+- Fit the data well
+- Avoid unnecessary predictors
+- Maintain a good balance between **accuracy and simplicity**
+
+## Summary of Best Subset Selection
+
+Best subset selection is a systematic procedure used to determine the best set of predictors for a regression model.
+
+---
+
+## Step 1: Start with the Null Model
+
+Let **M₀** denote the **null model**, which contains **no predictors**.
+
+This model simply predicts the **sample mean of the response variable** for every observation.
+
+```
+ŷ = ȳ
+```
+
+---
+
+## Step 2: Fit Models with k Predictors
+
+For:
+
+```
+k = 1, 2, ..., p
+```
+
+Fit **all possible models** that contain exactly **k predictors**.
+
+The number of such models is:
+
+```
+(p choose k)
+```
+
+Each model represents a different combination of predictors.
+
+---
+
+## Step 3: Choose the Best Model for Each k
+
+Among the models that contain **k predictors**, choose the **best model** and denote it as:
+
+```
+M_k
+```
+
+The best model is typically defined as the model with:
+
+- **Smallest RSS (Residual Sum of Squares)**  
+or equivalently  
+- **Largest R²**
+
+Thus for each value of **k**, we obtain one best model.
+
+---
+
+## Step 4: Select the Final Model
+
+Finally, we choose the best model from the set:
+
+```
+M₀, M₁, M₂, ..., M_p
+```
+
+using a model evaluation criterion such as:
+
+- **Cross-validated prediction error**
+- **Mallow’s Cp**
+- **AIC**
+- **BIC**
+- **Adjusted R²**
+
+These criteria help balance **model fit** and **model complexity**.
+
+---
+
+## Key Idea
+
+Best subset selection works by:
+
+1. Evaluating **all possible combinations of predictors**
+2. Identifying the **best model for each number of predictors**
+3. Selecting the final model using a **model selection criterion**
+```
+
+The best subset selection above is for linear models but the same applies for other models as well like logistic regression. 
+
+## Stepwise Selection
+
+Best subset selection becomes impractical when the number of predictors **p is very large**, because it requires fitting **all possible models**.
+
+### Computational Limitation
+- Best subset selection requires evaluating **2^p models**, which becomes computationally infeasible when **p is large**.
+
+### Statistical Issues
+- When **p is large**, the search space becomes extremely large.
+- This increases the chance of finding models that **fit the training data well but do not generalize to new data**.
+
+### Overfitting Risk
+- Exploring too many models can lead to:
+  - **Overfitting**
+  - **High variance in coefficient estimates**
+
+### Motivation for Stepwise Methods
+To address these problems, **stepwise selection methods** are used.
+
+These methods:
+- Search through a **much smaller set of models**
+- Are **computationally more efficient**
+- Help **reduce overfitting**
+
+Thus, stepwise procedures provide a **practical alternative to best subset selection** when dealing with many predictors.
+
+## Backward Elimination
+
+Backward elimination is a stepwise model selection method that **starts with the full model containing all predictors** and then **iteratively removes the least significant predictors**.
+
+---
+
+### Step 1: Start with the Full Model
+
+Fit the regression model containing all **p predictors**:
+
+\[
+y = \beta_0 + \beta_1 x_1 + \cdots + \beta_p x_p + \epsilon
+\]
+
+For each predictor, compute its **p-value** using a statistical test (such as the F-test or t-test).
+
+Other criteria such as **AIC, BIC, or \(C_p\)** can also be used.
+
+---
+
+### Step 2: Check Significance
+
+Check whether the **p-values of all predictors are smaller than a chosen threshold \(\alpha\)**  
+(often called **alpha to drop**).
+
+---
+
+### Step 3: Decision
+
+- **If all p-values < α:**  
+  Stop the algorithm. All predictors are considered important.
+
+- **If any p-value ≥ α:**  
+  Remove the predictor with the **largest p-value** (the least significant variable).
+
+---
+
+### Step 4: Repeat
+
+Refit the model **without the removed predictor** and repeat the process until all remaining predictors are statistically significant.
+
+---
+
+### Key Idea
+
+Backward elimination gradually **simplifies the model by removing unimportant predictors**, helping reduce model complexity and improve interpretability.
+```
+## Forward Selection
+
+Forward selection is a stepwise model selection method that **starts with no predictors** and **adds predictors one at a time** based on their statistical significance.
+
+---
+
+### Step 1: Start with the Null Model
+
+Begin with a model that contains **no predictors**:
+
+\[
+y = \beta_0 + \epsilon
+\]
+
+---
+
+### Step 2: Fit Simple Regression Models
+
+Fit **p separate simple linear regression models**, one for each predictor:
+
+\[
+y = \beta_0 + \beta_1 x_j, \quad j = 1, \dots, p
+\]
+
+For each predictor, compute the **p-value** for the hypothesis:
+
+\[
+H_0 : \beta_1 = 0
+\]
+
+Other model selection criteria such as **AIC, BIC, or \(C_p\)** may also be used.
+
+---
+
+### Step 3: Select the Best Predictor
+
+Choose the **most significant predictor**, denoted \(x_{(1)}\), which has the **smallest p-value**.
+
+---
+
+### Step 4: Decision Rule
+
+- **If the smallest p-value > α (alpha to enter):**  
+  Stop the procedure — no predictor is added.
+
+- **If the smallest p-value ≤ α:**  
+  Add this predictor to the model.
+
+---
+
+### Step 5: Repeat the Process
+
+Once a predictor is added, repeat the process:
+
+1. Consider adding each remaining predictor.
+2. Fit models including the predictors already selected.
+3. Choose the predictor with the **smallest p-value**.
+
+Continue until **no additional predictor meets the significance threshold**.
+
+---
+
+### Key Idea
+
+Forward selection **builds the model gradually**, adding predictors only if they significantly improve the model.
+
+## Stepwise Selection
+
+Stepwise selection is a **hybrid method** that combines **forward selection** and **backward elimination**.
+
+---
+
+### Limitations of Forward and Backward Methods
+
+- **Backward elimination limitation:**  
+  Once a predictor is removed from the model, it **cannot be reconsidered** later.
+
+- **Forward selection limitation:**  
+  Once a predictor enters the model, its usefulness is **not re-evaluated in later steps**.
+
+---
+
+### Stepwise Selection Idea
+
+Stepwise selection addresses these issues by allowing predictors to **both enter and leave the model multiple times**.
+
+---
+
+### Algorithm
+
+1. **Forward Stage**
+   - Perform **forward selection**.
+   - Add the most significant predictor (if its p-value ≤ α to enter).
+
+2. **Backward Stage**
+   - After adding a predictor, perform **backward elimination**.
+   - Remove any predictor whose p-value ≥ α to drop.
+
+3. **Repeat**
+   - Continue alternating between forward and backward steps.
+
+---
+
+### Stopping Rule
+
+The algorithm stops when:
+
+- **No predictor can be added**, and  
+- **No predictor can be removed**
+
+according to the specified **α to enter** and **α to drop** thresholds.
+
+---
+
+### Key Idea
+
+Stepwise selection dynamically **adds useful predictors and removes unnecessary ones**, helping balance **model accuracy and complexity**.
