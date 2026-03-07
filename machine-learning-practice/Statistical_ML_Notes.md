@@ -225,7 +225,10 @@ In statistical learning we model the relationship between predictors (covariates
 
 ### General Model
 
-The response is written as
+The response is written as : 
+Given response $$ Y and Covariates (X1i, X2i, X3i ....Xpi)^T $$
+
+We model the relationship as: 
 
 $$
 Y_i = f(X_i) + \epsilon_i
@@ -238,9 +241,119 @@ where:
 
 **Interpretation** - The goal of statistical learning is to estimate or approximae the unknown function $f$ using observed data. 
 
-## Income vs Education Example
+## Income vs Education
 
-![Income vs Education](figures-for-notes/income-vs-education.png)
+![Education vs Income](figures-for-notes/income-vs-education.png)
 
 **Key Takeaway** - Statistical machine learning models data as : 
 response = systematic relationship (function $f$) + random error, and the main goal is to **estimate $f$ from data**
+
+# Learning the relationship between variables 
+
+In statistical learning the goal is to estimate or learn the function $$f$$ that describes how the **response variable Y** depends on the **predictors X**.
+
+**Two main objectives of learning $$f$$**
+1. Prediction 
+Use the estimated relationship to predict the response Y for new observations of X 
+2. Inference 
+Understand how the predictors influence the response, such as: 
+- which variable affects Y 
+- whether the effect is positive or negative 
+- How strong the relationship is
+
+**Example of prediction:** - Predicting how much money a person will donate using many observed characteristics of individuals. 
+
+**Example of inference:** - Studying house prices to determine which factors (e.g. size, location, etc) have the strongest impact on price. 
+
+**Key Takeaway** - Learning the function $$f$$ serves two purposes: predicting outcomes for new data and understanding the relationship between variables. 
+
+# Methods for estimating the function of $$f$$$
+To learn the relationship between inputs X and response Y we must estimate the unknown function $$f$$ using statistical models. 
+
+2 main approaches 
+1. **Parametric methods** - Assume a specific functional form for the relationship 
+**Example** - Linear regression, where Y is modeled as a linear combination of predictors.
+The parameters(coefficents $\beta$) are estimated using a loss function, commonly **Ordinary Least Squares (OLS)**
+
+2. **Non parametric methods**  - Do not assume a fixed functional form for $$f$$. 
+Instead, the data is allowed to determine the shape of the relationship. 
+Examples include: **Spline method** & **Kernel Smoothing** 
+
+**Trade off** 
+- Parametric methods are simpler and require less data but may be less flexible. 
+- Non Parametric methods are more flexible but usually require larger datasets for accurate estimation. 
+
+**Key takeaway** - The relationship $$f$$ can be estimated using parametric methods(fixed structure) or nonparametric models (flexible structure) - with flexibility requiring more data.
+
+# Tradeoff between accuracy and interpretability 
+In statistical learning there is often a tradeoff between how accurate a model is and how easy it is to interpret. 
+
+**Principle of Simpliciy**
+According to Occam's razor (parsimony principle), simpler models are generally preferred because they are easier to understand and explain. 
+
+Simple models like linear regression are highy interpretable because we can clearly see how each variable affects the response. 
+
+**Accuracy and Overfitting**
+More complex models may capture more patterns in data but can overfit, meaning they learn noise rather than true relationship. 
+Sometimes simpler models actually give better predictions because they generalise better. 
+
+## Accuracy Vs Interpretability
+
+![Interpretability Vs Flexibility](figures-for-notes/accuracy-vs-interpretability.png)
+
+The above figure shows:
+**Simple models** (eg: subset selection, lasso, least squares) --> high interpretability but lower flexibility. 
+**Complex models** (e.g. SVM, boosting,bagging) -->higher flexibility and often better predictive power but harder to interpret. 
+
+**Key Takeaway:** Machine Learning models must balance interpretability (simplicity) and predictive accuracy (flexibility), since increasing model complexity usually reduces interpretability. 
+
+# Quality of Fit
+
+Measuring the modelaccuracy or Quality of Fit - A common way to measure how well a model predicts the response variable is the **Mean Square Error (MSE)**
+
+**What is the meaning of MSE** 
+- MSE measures the avergae squared difference between the actual values Yi and the predicted values $\hat{Y}_i$.
+- Smaller MSE means **better predictive accuracy** 
+
+**Training Vs Test Data** 
+- **Training data:** used to build the model and estimate predictions 
+- **Test date:** new unseen data used to evaluate how well the model generalizes. 
+
+Very flexible models can achieve **very low training MSE**, but may perform **worse on test data**, leading to higher test MSE. 
+
+Model quality is often evaluated using **MSE** but the most important measure is **test MSE** since it reflects performance on new unseen data. 
+
+# Levels of Flexibility 
+
+![Levels of Flexibility](figures-for-notes/levels-of-flexibility.png)
+
+Different models have different levels of flexibility - ie. how complex the relationship can learn between X and Y. 
+
+In the above plot:
+**Black line** - true underlying relationship
+**Orange line** - simple linear model (low flexibilty)
+**Blue Curve** - moderately flexible model 
+**Green Curve** - highly flexible model that closely follows the data. 
+
+**Effect of increasing flexibility** 
+As the model flexibilty increases the model can fit the training data more closely - capturing more complex patterns. 
+
+**Training vs test error** 
+- **Training MSE(grey)** - decreases as flexibility increases because complex models fir the training data better. 
+- **Test MSE (red)** - first decreases then increases when the model becomes too flexible 
+
+The reason for increase in the test error is highly flexible models may overfit ie. they may capture noise in the training data instead of the true pattern. 
+
+**Irreducible error** 
+The dashed line represnts the minimum possible prediction error caused by randomness in the data that no model can eliminate.
+
+**Key Takeaway** - Increasing model flexibility reduces training error but can increase test error due to overfitting - so the best model is usually somewhere in the middle level of flexibility 
+
+# Bias and Variance Tradeoff 
+
+When we choose any learning method we need to try to balance bias and variance  - two key sources of prediction error. 
+
+- Bias : Bias measures the error caused by approximating a complex real-world relationship with a simpler model. 
+High bias models are too simple and may miss important patterns in the data. 
+- Variance: 
+
