@@ -4391,3 +4391,2173 @@ according to the specified **α to enter** and **α to drop** thresholds.
 ### Key Idea
 
 Stepwise selection dynamically **adds useful predictors and removes unnecessary ones**, helping balance **model accuracy and complexity**.
+
+## Singular Value Decomposition (SVD)
+
+Singular Value Decomposition (SVD) is a matrix factorization technique that breaks any matrix into three simpler matrices.  
+It is extremely important in **dimension reduction, principal component analysis (PCA), low-rank approximation, and regularization**.
+
+---
+
+## Main Idea
+
+For any \(m \times n\) matrix \(A\), the SVD factorization is:
+
+\[
+A = U \Sigma V^\top
+\]
+
+where:
+
+- **\(U\)** = matrix of left singular vectors  
+- **\(\Sigma\)** = diagonal matrix of singular values  
+- **\(V^\top\)** = transpose of the matrix of right singular vectors  
+
+So SVD writes a matrix as:
+
+\[
+\text{(orthogonal)} \times \text{(diagonal)} \times \text{(orthogonal)}
+\]
+
+---
+
+## Components of the Decomposition
+
+### 1. Matrix \(U\)
+
+\(U\) is an \(m \times m\) orthogonal matrix.
+
+- Its columns are called **left singular vectors**
+- These columns are eigenvectors of:
+
+\[
+AA^\top
+\]
+
+---
+
+### 2. Matrix \(V\)
+
+\(V\) is an \(n \times n\) orthogonal matrix.
+
+- Its columns are called **right singular vectors**
+- These columns are eigenvectors of:
+
+\[
+A^\top A
+\]
+
+---
+
+### 3. Matrix \(\Sigma\)
+
+\(\Sigma\) is an \(m \times n\) diagonal matrix.
+
+Its diagonal entries are the **singular values**:
+
+\[
+\sigma_1, \sigma_2, \dots, \sigma_r
+\]
+
+where \(r\) is the rank of the matrix.
+
+These singular values are the **square roots of the nonzero eigenvalues** of both:
+
+\[
+AA^\top \quad \text{and} \quad A^\top A
+\]
+
+---
+
+## Important Note
+
+SVD should **not be confused with eigen-decomposition**.
+
+However, they are related:
+
+- Eigen-decomposition applies to **square matrices**
+- SVD applies to **any matrix**, including rectangular ones
+
+For positive semi-definite matrices, SVD becomes closely related to eigen-decomposition.
+
+---
+
+## Why SVD Matters in Model Selection
+
+SVD is important because it helps us understand the **structure of the predictor matrix**.
+
+It is used in:
+
+- **Dimension reduction**
+- **Principal Component Regression (PCR)**
+- **Handling multicollinearity**
+- **Reducing noise**
+- **Low-rank approximation**
+
+This is useful when we have many correlated predictors or when we want to build a simpler model.
+
+---
+
+## Geometric Interpretation
+
+SVD describes how a matrix transforms data:
+
+- \(V^\top\) rotates the data
+- \(\Sigma\) stretches or shrinks the data along principal directions
+- \(U\) rotates it again
+
+This makes SVD very useful for identifying the **most important directions of variation** in the data.
+
+---
+
+## Key Takeaway
+
+SVD factorizes any matrix as
+
+\[
+A = U \Sigma V^\top
+\]
+
+and helps identify the main directions and magnitudes of variation in the data.  
+It is a foundational tool for **dimension reduction and modern statistical learning methods**.
+
+## Least Squares Can Be Sensitive
+
+In ordinary least squares, we start with the linear model
+
+\[
+Y = Z\beta + \varepsilon
+\]
+
+where:
+- \(Y\) is the response vector,
+- \(Z\) is the design matrix,
+- \(\beta\) is the vector of coefficients,
+- \(\varepsilon\) is the error term.
+
+If \(Z'Z\) is invertible, the least squares estimator is
+
+\[
+\hat{\beta} = (Z'Z)^{-1}Z'y
+\]
+
+This formula looks simple, but the important question is:
+
+> **When is this estimator stable, and when can it become very sensitive?**
+
+That is what these slides are explaining.
+
+---
+
+## Why Least Squares Can Be Unstable
+
+The problem comes from the matrix inverse
+
+\[
+(Z'Z)^{-1}
+\]
+
+If \(Z'Z\) is close to singular, then its inverse can contain very large values.  
+When that happens, even a very small change in the data can produce a large change in \(\hat{\beta}\).
+
+This is especially likely when the columns of \(Z\) are very similar to each other, meaning the predictors are **highly correlated** or **collinear**.
+
+---
+
+## Step 1: Use the Singular Value Decomposition (SVD) of \(Z\)
+
+To understand the instability, we write \(Z\) using its singular value decomposition:
+
+\[
+Z = U\Sigma V'
+\]
+
+where:
+
+- \(U\) is an \(n \times n\) orthogonal matrix,
+- \(\Sigma\) is an \(n \times (r+1)\) diagonal-like matrix containing the singular values,
+- \(V\) is an \((r+1)\times(r+1)\) orthogonal matrix.
+
+The singular values are
+
+\[
+\sigma_1, \sigma_2, \dots, \sigma_{r+1}
+\]
+
+These numbers tell us how much information there is in different directions of the predictor space.
+
+### Important idea
+If one or more singular values are very small, then the design matrix is close to being rank-deficient.  
+That is the source of instability in least squares.
+
+---
+
+## Step 2: Rewrite \(Z'Z\) Using the SVD
+
+Starting from
+
+\[
+Z = U\Sigma V'
+\]
+
+we compute
+
+\[
+Z'Z = (U\Sigma V')'(U\Sigma V')
+\]
+
+Using transpose rules:
+
+\[
+(U\Sigma V')' = V\Sigma' U'
+\]
+
+so
+
+\[
+Z'Z = V\Sigma' U' U \Sigma V'
+\]
+
+Since \(U\) is orthogonal,
+
+\[
+U'U = I
+\]
+
+therefore
+
+\[
+Z'Z = V\Sigma'\Sigma V'
+\]
+
+Now, \(\Sigma'\Sigma\) is diagonal with entries
+
+\[
+\sigma_1^2, \sigma_2^2, \dots, \sigma_{r+1}^2
+\]
+
+so we get
+
+\[
+Z'Z = V \, \text{diag}(\sigma_1^2,\dots,\sigma_{r+1}^2)\, V'
+\]
+
+### Interpretation
+This shows that the eigenvalues of \(Z'Z\) are the squared singular values of \(Z\).
+
+So if some \(\sigma_i\) is very small, then some eigenvalue of \(Z'Z\) is very small, and that makes inversion dangerous.
+
+---
+
+## Step 3: Invert \(Z'Z\)
+
+Since
+
+\[
+Z'Z = V \, \text{diag}(\sigma_1^2,\dots,\sigma_{r+1}^2)\, V'
+\]
+
+its inverse is
+
+\[
+(Z'Z)^{-1}
+=
+V \, \text{diag}\left(\frac{1}{\sigma_1^2},\frac{1}{\sigma_2^2},\dots,\frac{1}{\sigma_{r+1}^2}\right)V'
+\]
+
+This is the key step.
+
+### Why this is a problem
+If some singular value \(\sigma_i\) is very small, then
+
+\[
+\frac{1}{\sigma_i^2}
+\]
+
+becomes very large.
+
+That means the inverse matrix can heavily amplify noise or tiny changes in the data.
+
+So even if the observed data changes only a little, the estimated coefficients may change a lot.
+
+---
+
+## Step 4: Rewrite the Least Squares Estimator
+
+Recall
+
+\[
+\hat{\beta} = (Z'Z)^{-1}Z'y
+\]
+
+Substitute the SVD-based form of \((Z'Z)^{-1}\):
+
+\[
+\hat{\beta}
+=
+V \, \text{diag}\left(\frac{1}{\sigma_1^2},\dots,\frac{1}{\sigma_{r+1}^2}\right)V'Z'y
+\]
+
+Since \(Z = U\Sigma V'\), we can simplify further and obtain
+
+\[
+(Z'Z)^{-1}Z'
+=
+V(\Sigma'\Sigma)^{-1}\Sigma' U'
+\]
+
+and therefore
+
+\[
+\hat{\beta}
+=
+V(\Sigma'\Sigma)^{-1}\Sigma' U' y
+\]
+
+Because of the diagonal structure, this becomes
+
+\[
+\hat{\beta}
+=
+V
+\begin{bmatrix}
+\sigma_1^{-1} & & 0 \\
+& \ddots & \\
+0 & & \sigma_{r+1}^{-1}
+\end{bmatrix}
+U'y
+\]
+
+or componentwise,
+
+\[
+\hat{\beta}
+=
+V
+\begin{bmatrix}
+\sigma_1^{-1}(U'y)_1 \\
+\vdots \\
+\sigma_{r+1}^{-1}(U'y)_{r+1}
+\end{bmatrix}
+\]
+
+---
+
+## Step 5: Understand What This Means
+
+This expression is extremely important:
+
+\[
+\hat{\beta}
+=
+V
+\begin{bmatrix}
+\sigma_1^{-1}(U'y)_1 \\
+\vdots \\
+\sigma_{r+1}^{-1}(U'y)_{r+1}
+\end{bmatrix}
+\]
+
+It tells us that each component of the solution is scaled by \(1/\sigma_i\).
+
+So if some \(\sigma_i\) is tiny, then the corresponding component gets multiplied by a huge number.
+
+That means:
+
+- the estimate can become numerically unstable,
+- coefficients can become very large,
+- the model may overreact to small noise,
+- interpretation becomes unreliable.
+
+---
+
+## Why Small Singular Values Happen
+
+The slide notes that some singular values can be very small when two columns of \(Z\) are very close.
+
+This is the idea of **collinearity** or **multicollinearity**.
+
+### Example
+Suppose one predictor is almost a copy of another predictor.  
+Then the model has trouble deciding how much weight to assign to each one separately.
+
+As a result:
+- the matrix \(Z'Z\) becomes nearly singular,
+- least squares becomes unstable,
+- coefficient estimates can vary wildly.
+
+So the issue is not necessarily that prediction always fails, but that the coefficient estimates become sensitive and unstable.
+
+---
+
+## Step 6: Ridge Regression as the Fix
+
+To reduce this instability, ridge regression replaces
+
+\[
+(Z'Z)^{-1}
+\]
+
+with
+
+\[
+(Z'Z + \lambda I)^{-1}
+\]
+
+where \(\lambda > 0\) is a tuning parameter.
+
+Using the same SVD idea,
+
+\[
+(Z'Z + \lambda I)^{-1}
+=
+V \, \text{diag}\left(
+\frac{1}{\sigma_1^2+\lambda},
+\dots,
+\frac{1}{\sigma_{r+1}^2+\lambda}
+\right)V'
+\]
+
+---
+
+## Why Ridge Helps
+
+Compare the two expressions.
+
+### Least squares:
+\[
+\frac{1}{\sigma_i^2}
+\]
+
+### Ridge regression:
+\[
+\frac{1}{\sigma_i^2+\lambda}
+\]
+
+Now even if \(\sigma_i\) is very small, the denominator does not become dangerously close to zero, because we add \(\lambda\).
+
+So ridge regression:
+- stabilizes the inverse,
+- reduces variance,
+- prevents huge coefficient values,
+- handles collinearity better.
+
+### Main intuition
+Ridge regression **shrinks** the unstable directions of the solution.
+
+Those unstable directions are exactly the ones associated with very small singular values.
+
+---
+
+## Big Picture Intuition
+
+The whole argument in these slides is:
+
+1. Least squares depends on inverting \(Z'Z\).
+2. The eigenvalues of \(Z'Z\) are \(\sigma_i^2\), where \(\sigma_i\) are the singular values of \(Z\).
+3. If some \(\sigma_i\) is very small, then \(1/\sigma_i^2\) is very large.
+4. That makes \((Z'Z)^{-1}\) unstable.
+5. Therefore least squares can be very sensitive.
+6. Ridge regression fixes this by replacing \(1/\sigma_i^2\) with \(1/(\sigma_i^2+\lambda)\).
+
+---
+
+## Why This Belongs in Model Selection
+
+This matters for model selection because when choosing a model, we do not only care about fit.  
+We also care about **stability** and **generalization**.
+
+A model with highly collinear predictors may fit the training data well, but:
+- the estimated coefficients may be unstable,
+- the model may be too sensitive to noise,
+- performance on new data may suffer.
+
+Ridge regression is one method that improves stability, especially when predictors are strongly correlated.
+
+So this slide is motivating why regularization methods become important in model selection.
+
+---
+
+## Key Formulas
+
+### Least squares estimator
+\[
+\hat{\beta} = (Z'Z)^{-1}Z'y
+\]
+
+### SVD of the design matrix
+\[
+Z = U\Sigma V'
+\]
+
+### Decomposition of \(Z'Z\)
+\[
+Z'Z = V\Sigma'\Sigma V' = V\,\text{diag}(\sigma_1^2,\dots,\sigma_{r+1}^2)\,V'
+\]
+
+### Inverse of \(Z'Z\)
+\[
+(Z'Z)^{-1}
+=
+V\,\text{diag}\left(\frac{1}{\sigma_1^2},\dots,\frac{1}{\sigma_{r+1}^2}\right)V'
+\]
+
+### Ridge inverse
+\[
+(Z'Z+\lambda I)^{-1}
+=
+V\,\text{diag}\left(\frac{1}{\sigma_1^2+\lambda},\dots,\frac{1}{\sigma_{r+1}^2+\lambda}\right)V'
+\]
+
+---
+
+## Final Takeaway
+
+Least squares becomes sensitive when the design matrix has very small singular values, which often happens under multicollinearity.
+
+The reason is that the estimator involves terms like
+
+\[
+\frac{1}{\sigma_i^2}
+\]
+
+and these blow up when \(\sigma_i\) is close to zero.
+
+Ridge regression solves this by adding a penalty term \(\lambda I\), giving
+
+\[
+\frac{1}{\sigma_i^2+\lambda}
+\]
+
+instead, which keeps the estimator stable.
+
+So the core message is:
+
+> **Least squares can be unstable in nearly collinear settings, and ridge regression is a principled way to stabilize it.**
+
+## Ridge Regression
+
+Ridge regression is a **regularization technique** used to stabilize linear regression when predictors are highly correlated or when the design matrix is close to singular.
+
+To simplify the notation, we consider the regression model **without an intercept**:
+
+\[
+Y = \beta_1 z_1 + \beta_2 z_2 + \cdots + \beta_r z_r + \varepsilon
+\]
+
+where:
+
+- \(Y\) is the response variable
+- \(z_1, z_2, ..., z_r\) are predictor variables
+- \(\beta_1, ..., \beta_r\) are unknown parameters
+- \(\varepsilon\) is the noise term
+
+In matrix form this can be written as:
+
+\[
+y = Z\beta + \varepsilon
+\]
+
+where:
+
+- \(y \in \mathbb{R}^n\)
+- \(Z \in \mathbb{R}^{n \times r}\)
+- \(\beta \in \mathbb{R}^r\)
+
+---
+
+# Ridge Regression Optimization Problem
+
+Ridge regression modifies the least squares objective by adding a **penalty on the size of the coefficients**.
+
+The estimator is defined as:
+
+\[
+\hat{\beta}^{ridge}
+=
+\arg\min_{\beta \in \mathbb{R}^r}
+\frac{1}{n}
+\sum_{i=1}^{n}
+\left(
+y_i - \beta_1 z_{1i} - \cdots - \beta_r z_{ri}
+\right)^2
++
+\lambda \sum_{j=1}^{r} \beta_j^2
+\]
+
+This objective contains two parts.
+
+### 1. Data fitting term
+
+\[
+\frac{1}{n} \sum_{i=1}^{n} (y_i - z_i^T \beta)^2
+\]
+
+This is the **mean squared error**, which measures how well the model fits the data.
+
+---
+
+### 2. Regularization penalty
+
+\[
+\lambda \sum_{j=1}^{r} \beta_j^2
+\]
+
+This term penalizes large coefficients.
+
+The purpose of this penalty is to **prevent the model from becoming unstable when predictors are highly correlated**.
+
+---
+
+# Compact Matrix Form
+
+Using matrix notation, the objective function becomes
+
+\[
+\hat{\beta}^{ridge}
+=
+\arg\min_{\beta \in \mathbb{R}^r}
+\frac{1}{n}
+\|y - Z\beta\|^2
++
+\lambda \|\beta\|^2
+\]
+
+where:
+
+- \(\|y - Z\beta\|^2\) is the squared residual error
+- \(\|\beta\|^2 = \sum_{j=1}^r \beta_j^2\)
+
+---
+
+# Role of the Tuning Parameter \( \lambda \)
+
+The parameter \( \lambda \) controls the strength of the penalty.
+
+### Case 1: \( \lambda = 0 \)
+
+\[
+\hat{\beta}^{ridge} = \hat{\beta}^{OLS}
+\]
+
+When the penalty is zero, ridge regression becomes **ordinary least squares**.
+
+---
+
+### Case 2: \( \lambda \to \infty \)
+
+\[
+\hat{\beta}^{ridge} \rightarrow 0
+\]
+
+If the penalty is extremely large, all coefficients are forced toward zero.
+
+---
+
+### Interpretation
+
+So \( \lambda \) controls a **tradeoff between two goals**:
+
+- fitting the data well
+- keeping coefficients small and stable
+
+This is known as the **bias–variance tradeoff**.
+
+---
+
+# Solving the Ridge Regression Problem
+
+To find the ridge estimator, we minimize the objective function
+
+\[
+E(\beta)
+=
+\frac{1}{n}\|y - Z\beta\|^2 + \lambda \|\beta\|^2
+\]
+
+---
+
+# Step 1 — Compute the Gradient
+
+We take the gradient of the objective with respect to \( \beta \).
+
+For the squared error term:
+
+\[
+\frac{1}{n}\|y - Z\beta\|^2
+\]
+
+the gradient is
+
+\[
+\frac{2}{n} Z'(Z\beta - y)
+\]
+
+For the penalty term:
+
+\[
+\lambda \|\beta\|^2
+\]
+
+the gradient is
+
+\[
+2\lambda\beta
+\]
+
+---
+
+# Step 2 — Combine Both Gradients
+
+The gradient of the full objective becomes
+
+\[
+D_\beta E(\beta)
+=
+\frac{2}{n}Z'(Z\beta - y) + 2\lambda\beta
+\]
+
+---
+
+# Step 3 — Set Gradient Equal to Zero
+
+To find the minimum, we set the gradient to zero:
+
+\[
+\frac{2}{n}Z'(Z\beta - y) + 2\lambda\beta = 0
+\]
+
+Divide by 2:
+
+\[
+\frac{1}{n}Z'(Z\beta - y) + \lambda\beta = 0
+\]
+
+Expand the first term:
+
+\[
+\frac{1}{n}Z'Z\beta - \frac{1}{n}Z'y + \lambda\beta = 0
+\]
+
+---
+
+# Step 4 — Rearranging Terms
+
+Group the terms containing \( \beta \):
+
+\[
+\left(\frac{1}{n}Z'Z + \lambda I\right)\beta = \frac{1}{n}Z'y
+\]
+
+Multiplying both sides by \(n\):
+
+\[
+(Z'Z + n\lambda I)\beta = Z'y
+\]
+
+---
+
+# Final Ridge Regression Estimator
+
+Solving for \( \beta \) gives
+
+\[
+\hat{\beta}^{ridge}
+=
+(Z'Z + n\lambda I)^{-1}Z'y
+\]
+
+---
+
+# Key Insight
+
+Compare this with ordinary least squares:
+
+### OLS estimator
+
+\[
+\hat{\beta}^{OLS} = (Z'Z)^{-1}Z'y
+\]
+
+### Ridge estimator
+
+\[
+\hat{\beta}^{ridge} = (Z'Z + n\lambda I)^{-1}Z'y
+\]
+
+The only difference is the **addition of \( n\lambda I \)**.
+
+This small change has a huge effect:
+
+- it guarantees the matrix is invertible
+- it stabilizes the estimator
+- it prevents coefficients from exploding
+
+---
+
+# Connection With Singular Value Decomposition
+
+From the previous slides we know
+
+\[
+Z'Z = V \Sigma' \Sigma V'
+\]
+
+and therefore
+
+\[
+Z'Z = V \, diag(\sigma_1^2, ..., \sigma_r^2) V'
+\]
+
+where \( \sigma_i \) are the **singular values of \(Z\)**.
+
+If some \( \sigma_i \) is very small, then
+
+\[
+(Z'Z)^{-1}
+\]
+
+contains very large numbers.
+
+This is the source of instability in least squares.
+
+---
+
+# What Ridge Regression Does
+
+Ridge regression replaces
+
+\[
+\frac{1}{\sigma_i^2}
+\]
+
+with
+
+\[
+\frac{1}{\sigma_i^2 + n\lambda}
+\]
+
+This prevents the denominator from becoming too small.
+
+---
+
+# Intuition
+
+Ridge regression works by **shrinking coefficients toward zero**.
+
+It reduces the influence of unstable directions in the predictor space, which correspond to small singular values.
+
+This makes the model:
+
+- more stable
+- less sensitive to noise
+- better at generalizing to new data
+
+---
+
+# Key Takeaways
+
+• Ridge regression adds an \(L_2\) penalty to least squares.
+
+• The penalty shrinks coefficients toward zero.
+
+• The estimator becomes
+
+\[
+\hat{\beta}^{ridge} = (Z'Z + n\lambda I)^{-1}Z'y
+\]
+
+• The parameter \( \lambda \) controls the amount of shrinkage.
+
+• Ridge regression is especially useful when predictors are **highly correlated**.
+
+## Bias–Variance Trade-off
+
+One of the key motivations behind ridge regression is the **bias–variance trade-off**.  
+This concept explains why adding a penalty (like ridge regression does) can actually **improve prediction performance**, even though it introduces bias.
+
+---
+
+# Model Setup
+
+Consider the regression model (without intercept for simplicity):
+
+\[
+Y = \beta_1 Z_1 + \beta_2 Z_2 + \cdots + \beta_r Z_r + \varepsilon
+\]
+
+or in matrix form:
+
+\[
+y = Z\beta + \varepsilon
+\]
+
+where:
+
+- \(y \in \mathbb{R}^n\) is the response vector
+- \(Z \in \mathbb{R}^{n \times r}\) is the design matrix
+- \(\beta \in \mathbb{R}^r\) is the vector of unknown coefficients
+- \(\varepsilon\) is the random noise
+
+We assume
+
+\[
+E[\varepsilon] = 0
+\]
+
+so the model is correctly specified.
+
+---
+
+# Two Competing Estimators
+
+We compare two estimators of \( \beta \):
+
+### 1. Least Squares Estimator
+
+\[
+\hat{\beta}^{ls} = (Z'Z)^{-1}Z'y
+\]
+
+This estimator **minimizes the training error** but can become unstable when predictors are highly correlated.
+
+---
+
+### 2. Ridge Regression Estimator
+
+\[
+\hat{\beta}^{ridge} = (Z'Z + n\lambda I)^{-1}Z'y
+\]
+
+This estimator adds a **regularization term** that stabilizes the solution.
+
+---
+
+# Measuring Estimator Quality
+
+To compare estimators, we use the **Mean Squared Error (MSE)** of the coefficient estimates.
+
+\[
+MSE(\hat{\beta}) = E\left[\|\hat{\beta} - \beta\|^2\right]
+\]
+
+This measures the **expected squared distance between the estimated coefficients and the true coefficients**.
+
+A smaller MSE means a better estimator.
+
+---
+
+# Bias of an Estimator
+
+The **bias** of an estimator measures how far its expected value is from the true parameter.
+
+\[
+Bias(\hat{\beta}) = E[\hat{\beta}] - \beta
+\]
+
+Interpretation:
+
+- If \(Bias(\hat{\beta}) = 0\), the estimator is **unbiased**
+- If \(Bias(\hat{\beta}) \neq 0\), the estimator systematically deviates from the true parameter
+
+---
+
+# Variance of an Estimator
+
+Another important quantity is the **variance** of the estimator.
+
+Variance measures **how much the estimator fluctuates across different samples**.
+
+Large variance means the estimator is unstable.
+
+---
+
+# Bias–Variance Decomposition
+
+The mean squared error can be decomposed into two components:
+
+\[
+MSE(\hat{\beta})
+=
+\|\text{Bias}(\hat{\beta})\|^2
++
+\text{Var}(\hat{\beta})
+\]
+
+So prediction error comes from two sources:
+
+### 1. Bias
+
+Error caused by incorrect assumptions in the model.
+
+High bias means the model is **too simple**.
+
+---
+
+### 2. Variance
+
+Error caused by sensitivity to the training data.
+
+High variance means the model **changes a lot with different datasets**.
+
+---
+
+# Behavior of Least Squares
+
+The least squares estimator has an important property:
+
+\[
+E[\hat{\beta}^{ls}] = \beta
+\]
+
+Therefore
+
+\[
+Bias(\hat{\beta}^{ls}) = 0
+\]
+
+So **least squares is unbiased**.
+
+However, when predictors are highly correlated:
+
+\[
+Var(\hat{\beta}^{ls})
+\]
+
+can become very large.
+
+This leads to unstable predictions.
+
+---
+
+# Behavior of Ridge Regression
+
+Ridge regression intentionally introduces bias.
+
+Because of the penalty term,
+
+\[
+E[\hat{\beta}^{ridge}] \neq \beta
+\]
+
+So ridge regression is **biased**.
+
+However, ridge regression **greatly reduces variance**.
+
+---
+
+# The Trade-off
+
+This leads to the key idea:
+
+Even though ridge regression introduces bias, it can **reduce variance enough that the total MSE decreases**.
+
+\[
+MSE = Bias^2 + Variance
+\]
+
+Ridge increases **Bias**, but decreases **Variance**.
+
+If the reduction in variance is large enough, the overall error becomes smaller.
+
+---
+
+# Intuition
+
+Least squares tries to perfectly fit the data.
+
+When predictors are highly correlated, small changes in the data can cause large changes in coefficients.
+
+Ridge regression prevents this by **shrinking the coefficients toward zero**, making the model more stable.
+
+---
+
+# Visual Interpretation
+
+Typically the relationship looks like this:
+
+| Model Complexity | Bias | Variance |
+|---|---|---|
+| Very simple model | High | Low |
+| Moderate complexity | Moderate | Moderate |
+| Very complex model | Low | High |
+
+The best model balances the two.
+
+---
+
+# Why This Matters for Model Selection
+
+When selecting models, we do not only care about training error.
+
+We care about **prediction performance on new data**.
+
+A model with slightly higher bias but much lower variance often generalizes better.
+
+This is why regularization methods like:
+
+- **Ridge regression**
+- **Lasso**
+- **Elastic Net**
+
+are widely used in machine learning and statistics.
+
+---
+
+# Key Takeaways
+
+- Least squares is **unbiased but can have high variance**.
+- Ridge regression **introduces bias but reduces variance**.
+- The goal is to **minimize total mean squared error**.
+- The best predictive model balances **bias and variance**.
+
+This balance is known as the **bias–variance trade-off**.
+
+## LASSO (Least Absolute Shrinkage and Selection Operator)
+
+LASSO is another regularization method used in linear regression.  
+Like ridge regression, it adds a penalty term to the least squares objective, but it uses a **different type of penalty**.
+
+The key property of LASSO is that it can **automatically perform variable selection**, meaning it can set some coefficients exactly equal to zero.
+
+---
+
+# LASSO Optimization Problem
+
+The LASSO estimator is defined as
+
+\[
+\hat{\beta}^{lasso}
+=
+\arg \min_{\beta \in \mathbb{R}^p}
+\|y - Z\beta\|^2 + \lambda \sum_{i=1}^{r} |\beta_i|
+\]
+
+Using vector notation:
+
+\[
+\hat{\beta}^{lasso}
+=
+\arg \min_{\beta \in \mathbb{R}^p}
+\|y - Z\beta\|^2 + \lambda \|\beta\|_1
+\]
+
+where
+
+\[
+\|\beta\|_1 = \sum_{j=1}^{r} |\beta_j|
+\]
+
+is called the **L1 norm**.
+
+---
+
+# Difference Between Ridge and LASSO
+
+The difference between ridge regression and LASSO lies in the **penalty term**.
+
+### Ridge regression
+
+\[
+\text{Penalty} = \lambda \|\beta\|_2^2
+\]
+
+This is the **L2 penalty** (squared coefficients).
+
+---
+
+### LASSO
+
+\[
+\text{Penalty} = \lambda \|\beta\|_1
+\]
+
+This is the **L1 penalty** (absolute value of coefficients).
+
+---
+
+# Why This Difference Matters
+
+Even though the two optimization problems look similar, their solutions behave very differently.
+
+### Ridge regression
+
+- Shrinks coefficients toward zero
+- But **never sets them exactly to zero**
+
+So all variables remain in the model.
+
+---
+
+### LASSO
+
+- Shrinks coefficients toward zero
+- **Some coefficients become exactly zero**
+
+Therefore LASSO automatically performs **feature selection**.
+
+---
+
+# Role of the Tuning Parameter \( \lambda \)
+
+The parameter \( \lambda \) controls the strength of the penalty.
+
+### When \( \lambda \to 0 \)
+
+The penalty disappears and we obtain the least squares estimator.
+
+\[
+\hat{\beta}^{lasso} \rightarrow \hat{\beta}^{ls}
+\]
+
+---
+
+### When \( \lambda \to \infty \)
+
+The penalty dominates and
+
+\[
+\hat{\beta}^{lasso} \rightarrow 0
+\]
+
+All coefficients shrink toward zero.
+
+---
+
+# LASSO Solution Under Orthogonal Design
+
+To understand the LASSO solution clearly, we analyze a special case where the predictors are **orthonormal**.
+
+This means
+
+\[
+X^T X = I
+\]
+
+In this situation, the coefficients can be solved **independently for each predictor**.
+
+---
+
+# Equivalent Optimization Problem
+
+For each coefficient \( \beta_j \), the optimization problem becomes
+
+\[
+\min_{\beta_j}
+(\beta_j - \hat{\beta}_j^{ls})^2 + \lambda |\beta_j|
+\]
+
+where
+
+\[
+\hat{\beta}_j^{ls}
+\]
+
+is the least squares estimate of that coefficient.
+
+This means LASSO adjusts each least squares coefficient individually.
+
+---
+
+# Soft Thresholding Solution
+
+The solution to this problem is called **soft thresholding**.
+
+The LASSO estimate is
+
+\[
+\hat{\beta}_j^{lasso}
+=
+\text{sign}(\hat{\beta}_j^{ls})
+\left(|\hat{\beta}_j^{ls}| - \frac{\lambda}{2}\right)_+
+\]
+
+where
+
+\[
+(x)_+ = \max(x,0)
+\]
+
+---
+
+# Piecewise Form of the Solution
+
+The solution can also be written as
+
+\[
+\hat{\beta}_j^{lasso}
+=
+\begin{cases}
+\hat{\beta}_j^{ls} - \frac{\lambda}{2} & \text{if } \hat{\beta}_j^{ls} > \frac{\lambda}{2} \\
+0 & \text{if } |\hat{\beta}_j^{ls}| \le \frac{\lambda}{2} \\
+\hat{\beta}_j^{ls} + \frac{\lambda}{2} & \text{if } \hat{\beta}_j^{ls} < -\frac{\lambda}{2}
+\end{cases}
+\]
+
+---
+
+# Interpretation of Soft Thresholding
+
+The LASSO transformation does two things:
+
+### 1. Shrinks large coefficients
+
+Large coefficients are reduced toward zero by a constant amount.
+
+\[
+\hat{\beta}_j^{ls} \rightarrow \hat{\beta}_j^{ls} - \frac{\lambda}{2}
+\]
+
+---
+
+### 2. Removes small coefficients
+
+If the least squares estimate is small enough
+
+\[
+|\hat{\beta}_j^{ls}| \le \frac{\lambda}{2}
+\]
+
+then
+
+\[
+\hat{\beta}_j^{lasso} = 0
+\]
+
+This is what creates **sparse models**.
+
+---
+
+# Why LASSO Performs Feature Selection
+
+Because small coefficients become exactly zero, LASSO effectively removes irrelevant predictors.
+
+So LASSO performs two tasks simultaneously:
+
+- **regularization**
+- **variable selection**
+
+---
+
+# Comparison of Methods (Orthogonal Case)
+
+Assume the design matrix is orthonormal:
+
+\[
+X^T X = I
+\]
+
+Then we can compare the methods easily.
+
+---
+
+# Best Subset Selection
+
+Best subset selection keeps only the largest coefficients.
+
+\[
+\hat{\beta}_j^{ls}
+\]
+
+Small coefficients are removed entirely based on model size.
+
+---
+
+# Ridge Regression
+
+Ridge regression shrinks coefficients proportionally:
+
+\[
+\hat{\beta}_j^{ridge}
+=
+\frac{\hat{\beta}_j^{ls}}{1+\lambda}
+\]
+
+This means:
+
+- every coefficient becomes smaller
+- but none are removed
+
+---
+
+# LASSO
+
+LASSO applies soft thresholding:
+
+\[
+\hat{\beta}_j^{lasso}
+=
+\text{sign}(\hat{\beta}_j^{ls})
+\left(|\hat{\beta}_j^{ls}| - \frac{\lambda}{2}\right)_+
+\]
+
+This means:
+
+1. coefficients shrink toward zero
+2. small coefficients become exactly zero
+
+---
+
+# Summary of Differences
+
+| Method | Penalty | Effect |
+|------|------|------|
+| Least Squares | none | unstable when predictors correlated |
+| Ridge | \(L_2\) penalty | shrinks coefficients |
+| LASSO | \(L_1\) penalty | shrinks + sets some to zero |
+
+---
+
+# Key Insight
+
+Ridge regression stabilizes the model by shrinking coefficients.
+
+LASSO goes further by **selecting variables automatically**, producing simpler and more interpretable models.
+
+Because of this property, LASSO is widely used in:
+
+- high-dimensional statistics
+- machine learning
+- genomics
+- signal processing
+
+## Ridge Regression vs LASSO (Geometric Interpretation)
+
+A key question in regularization is:
+
+> Why does **LASSO produce coefficients that are exactly zero**, while **ridge regression only shrinks coefficients but rarely sets them to zero**?
+
+To understand this difference, we look at an **equivalent constrained optimization formulation** and the **geometry of the solution**.
+
+---
+
+# Constrained Form of the Optimization Problems
+
+Both ridge regression and LASSO can be written as **constrained least squares problems**.
+
+Instead of adding a penalty term to the objective, we impose a constraint on the size of the coefficients.
+
+---
+
+## LASSO Formulation
+
+\[
+\min_{\beta} \sum_i \left(y_i - \beta_0 - \sum_j \beta_j x_{ij}\right)^2
+\]
+
+subject to
+
+\[
+\sum_j |\beta_j| \leq c
+\]
+
+This means:
+
+- we minimize the residual sum of squares
+- but we restrict the **L1 norm of the coefficients**
+
+\[
+||\beta||_1 = \sum_j |\beta_j|
+\]
+
+The parameter \(c\) controls how large the coefficients are allowed to be.
+
+---
+
+## Ridge Regression Formulation
+
+\[
+\min_{\beta} \sum_i \left(y_i - \beta_0 - \sum_j \beta_j x_{ij}\right)^2
+\]
+
+subject to
+
+\[
+\sum_j \beta_j^2 \leq c
+\]
+
+This restricts the **L2 norm of the coefficients**
+
+\[
+||\beta||_2^2 = \sum_j \beta_j^2
+\]
+
+---
+
+# Geometric Interpretation
+
+The solution to both problems can be understood using geometry.
+
+We consider two objects:
+
+1. **Contours of the least squares loss function**
+2. **The constraint region imposed by the penalty**
+
+---
+
+## Loss Function Contours
+
+The red ellipses represent **contours of equal least squares error**.
+
+- Each ellipse corresponds to a constant value of the residual sum of squares.
+- Moving toward the center means **lower prediction error**.
+
+The optimal least squares solution lies at the center of these ellipses.
+
+However, the constraint prevents us from reaching that point.
+
+---
+
+# Constraint Regions
+
+The constraint determines the region where the solution must lie.
+
+---
+
+## LASSO Constraint Region
+
+For LASSO:
+
+\[
+||\beta||_1 \leq c
+\]
+
+The feasible region becomes a **diamond-shaped region** in coefficient space.
+
+This shape has **sharp corners along the coordinate axes**.
+
+These corners correspond to situations where:
+
+\[
+\beta_1 = 0 \quad \text{or} \quad \beta_2 = 0
+\]
+
+---
+
+## Ridge Constraint Region
+
+For ridge regression:
+
+\[
+||\beta||_2^2 \leq c
+\]
+
+The feasible region becomes a **circular region**.
+
+This region has **no corners**.
+
+---
+
+# Finding the Optimal Solution
+
+The optimal solution is the point where the **smallest loss contour touches the constraint region**.
+
+---
+
+## Ridge Regression Behavior
+
+Because the ridge constraint region is smooth and circular:
+
+- the contour usually touches the boundary at a **non-axis point**
+
+This means
+
+\[
+\beta_1 \neq 0, \quad \beta_2 \neq 0
+\]
+
+So ridge regression **shrinks coefficients but rarely sets them exactly to zero**.
+
+---
+
+## LASSO Behavior
+
+The LASSO constraint region has **sharp corners**.
+
+These corners lie on the axes where one coefficient equals zero.
+
+Because of this geometry, the contour often touches the constraint **exactly at a corner**.
+
+This means
+
+\[
+\beta_j = 0
+\]
+
+for some predictors.
+
+Therefore LASSO naturally produces **sparse models**.
+
+---
+
+# Why LASSO Performs Feature Selection
+
+The geometric explanation reveals why LASSO can eliminate variables.
+
+The corners of the L1 constraint region make it much more likely that the optimal solution occurs where one or more coefficients are exactly zero.
+
+Thus LASSO automatically performs **feature selection**.
+
+---
+
+# Visual Summary
+
+| Method | Constraint | Shape | Effect |
+|------|------|------|------|
+| Ridge | \( \sum \beta_j^2 \le c \) | Circle | Shrinks coefficients |
+| LASSO | \( \sum |\beta_j| \le c \) | Diamond | Shrinks + sets some coefficients to zero |
+
+---
+
+# Key Insight
+
+Both ridge regression and LASSO reduce model complexity by constraining coefficient size.
+
+However:
+
+- **Ridge regression** produces **small but nonzero coefficients**.
+- **LASSO** produces **sparse models with some coefficients exactly zero**.
+
+This property makes LASSO particularly useful in **high-dimensional problems** where feature selection is important.
+
+---
+
+# Final Takeaway
+
+The difference between ridge and LASSO arises from the **geometry of their penalty constraints**.
+
+The **L1 constraint (LASSO)** has sharp corners, which leads to coefficients being exactly zero.
+
+The **L2 constraint (ridge)** is smooth, which leads to coefficients being shrunk but rarely eliminated.
+
+## Ridge Regression vs LASSO
+
+![Ridge Regression vs LASSO](figures-for-notes/ridge-regression-vs-lasso.png)
+
+## Credit Data Example — Bias–Variance Trade-off in Practice
+
+This example illustrates how **bias**, **variance**, and **test mean squared error (MSE)** change when using **LASSO** and **Ridge regression** on a simulated credit dataset.
+
+These plots help visualize the **bias–variance trade-off** and show how the tuning parameter \( \lambda \) affects model performance.
+
+---
+
+## Visualization
+![Graph 1](figures-for-notes/cde1.png)
+![Graph2](figures-for-notes/cde2.png)
+
+<p align="center">
+  <img src="images/credit-data-example.png" width="700">
+</p>
+
+---
+
+# Left Plot: Error Components vs Regularization Strength
+
+The left figure shows how three quantities change as the **regularization parameter \( \lambda \)** increases.
+
+### Curves
+
+- **Black curve — Squared Bias**
+- **Green curve — Variance**
+- **Purple curve — Test Mean Squared Error**
+
+---
+
+## Effect of Increasing \( \lambda \)
+
+### When \( \lambda \) is very small
+
+The model behaves like **ordinary least squares**.
+
+- Bias is **very small**
+- Variance is **very large**
+- The model is **highly sensitive to the training data**
+
+This situation corresponds to **overfitting**.
+
+---
+
+### As \( \lambda \) increases
+
+Regularization becomes stronger.
+
+- Coefficients are **shrunk toward zero**
+- Variance **decreases**
+- Bias **increases**
+
+This reduces model instability.
+
+---
+
+### When \( \lambda \) becomes very large
+
+The model becomes overly simple.
+
+- Most coefficients shrink toward zero
+- Bias becomes **large**
+- Variance becomes **very small**
+
+This leads to **underfitting**.
+
+---
+
+## Test Mean Squared Error
+
+The **purple curve** represents the test MSE.
+
+It follows a **U-shaped curve**:
+
+- Initially decreases as variance is reduced
+- Eventually increases as bias becomes too large
+
+The **minimum point** represents the **optimal model complexity**.
+
+The **purple cross** indicates the value of \( \lambda \) where the test MSE is minimized.
+
+---
+
+# Right Plot: Comparison of LASSO vs Ridge
+
+The right figure compares **LASSO (solid lines)** and **Ridge regression (dashed lines)**.
+
+The horizontal axis shows:
+
+\[
+R^2
+\]
+
+on the **training data**, which measures how well the model fits the training set.
+
+---
+
+## Observations
+
+### Bias
+
+Bias increases as regularization becomes stronger.
+
+Both LASSO and ridge increase bias, but at slightly different rates.
+
+---
+
+### Variance
+
+Variance decreases as model complexity decreases.
+
+Regularization helps control variance by shrinking coefficients.
+
+---
+
+### Test MSE
+
+The total prediction error depends on the balance between bias and variance.
+
+Both ridge and LASSO attempt to **find the optimal balance** that minimizes test MSE.
+
+---
+
+# Key Insight
+
+This example demonstrates the **core principle of regularization**:
+
+Reducing variance slightly (even at the cost of introducing some bias) can significantly improve predictive performance.
+
+This leads to the **bias–variance trade-off**.
+
+---
+
+# Why Regularization Works
+
+Without regularization:
+
+- coefficients can become large
+- models overfit the training data
+- predictions become unstable
+
+Regularization methods like **ridge regression** and **LASSO**:
+
+- shrink coefficients
+- stabilize the model
+- improve generalization performance
+
+---
+
+# Key Takeaways
+
+- Increasing \( \lambda \) increases **bias** but decreases **variance**.
+- Test error is minimized at an **intermediate level of regularization**.
+- The optimal \( \lambda \) balances **bias and variance**.
+- Both **LASSO** and **ridge regression** help control model complexity.
+
+## Choosing the Regularization Parameter \( \lambda \)
+
+In regularization methods such as **Ridge regression** and **LASSO**, the tuning parameter \( \lambda \) controls how strongly the model penalizes large coefficients.
+
+Choosing the correct value of \( \lambda \) is crucial because it determines the **complexity of the model**.
+
+---
+
+# Why Do We Need a Method to Choose \( \lambda \)?
+
+We cannot simply choose \( \lambda \) arbitrarily.
+
+We need a **systematic and disciplined approach** because:
+
+- \( \lambda \) directly affects model complexity
+- different values of \( \lambda \) produce different models
+- some models may **overfit** the data
+- others may **underfit**
+
+Our goal is to choose the value of \( \lambda \) that **minimizes the prediction error**.
+
+More specifically, we want the value of \( \lambda \) that minimizes the **Mean Squared Error (MSE)** on new data.
+
+This problem is part of the broader topic of **model selection**.
+
+---
+
+# Training Set vs Test Set
+
+A key concept in model selection is the separation of data into two parts:
+
+1. **Training set**
+2. **Test set**
+
+---
+
+## Training Set
+
+The **training set** is used to build the statistical model.
+
+Using the training data, we estimate the function
+
+\[
+\hat{f}(\cdot)
+\]
+
+which represents our fitted model.
+
+For example:
+
+- fitting regression coefficients
+- estimating parameters
+- learning patterns in the data
+
+---
+
+## Test Set
+
+The **test set** is a separate dataset used to evaluate how well the model performs on **new, unseen data**.
+
+A good model should not only perform well on the training data, but should also perform well on **independent data**.
+
+We measure this using the **test error**.
+
+---
+
+# Why Test Performance Matters
+
+A model can fit the training data extremely well but still perform poorly on new data.
+
+This happens when the model **overfits**.
+
+Overfitting occurs when the model:
+
+- captures noise instead of the true signal
+- becomes too complex
+- loses generalization ability
+
+Therefore, evaluating performance on a test set helps us assess the model's **generalization ability**.
+
+---
+
+# Ideal Data Splitting
+
+Ideally, we divide our available dataset into:
+
+- **Training set** — used to build the model
+- **Test set** — used to evaluate the model
+
+This allows us to simulate how the model will behave when applied to new data.
+
+---
+
+# Practical Limitations
+
+In practice, splitting the data into training and test sets is not always straightforward.
+
+For example:
+
+- when the dataset is very small
+- when we have very few observations
+
+In such situations, we must use alternative techniques such as **cross-validation** to estimate test error more reliably.
+
+---
+
+# Goal of Model Selection
+
+The goal is to find the **best-trained model** that performs well on new data.
+
+In the context of regularization methods, this means choosing the value of \( \lambda \) that produces the **lowest prediction error**.
+
+---
+
+# Real-World Example
+
+A famous example of this principle is the **Netflix Prize competition**.
+
+In that challenge:
+
+- companies built predictive models using training data
+- the models were evaluated on unseen test data
+- the goal was to produce the most accurate predictions
+
+The winning model was the one that **generalized best to new data**, not necessarily the one that fit the training data best.
+
+---
+
+# Key Takeaways
+
+- The regularization parameter \( \lambda \) controls model complexity.
+- We want to choose \( \lambda \) that minimizes prediction error.
+- To evaluate models, we split data into **training and test sets**.
+- Good models perform well on **new, unseen data**, not just training data.
+- This process is part of **model selection**.
+
+## Cross Validation for Model Selection
+
+To choose the optimal value of the regularization parameter \( \lambda \), we often use **cross validation (CV)**.
+
+Cross validation is a method for estimating how well a model will perform on **new unseen data**.
+
+The idea is to repeatedly split the data into training and validation sets and measure prediction error.
+
+---
+
+# K-Fold Cross Validation
+
+The most common approach is **K-fold cross validation**.
+
+### Step 1 — Split the Data
+
+Divide the training dataset \(T\) into \(K\) equal-sized subsets:
+
+\[
+T = (T_1, T_2, ..., T_K)
+\]
+
+Each subset is called a **fold**.
+
+Common choices for \(K\):
+
+- \(K = 5\)
+- \(K = 10\)
+
+---
+
+### Step 2 — Train the Model
+
+For each fold \(k = 1, 2, ..., K\):
+
+- Train the model using all the data **except fold \(T_k\)**.
+
+This produces a fitted model
+
+\[
+\hat{f}_{-k}^{(\lambda)}(z)
+\]
+
+which is trained on the dataset excluding fold \(k\).
+
+---
+
+### Step 3 — Validate the Model
+
+Use the observations in fold \(T_k\) as validation data.
+
+For each observation in that fold, compute the predicted value using the model trained without that fold.
+
+---
+
+### Step 4 — Compute the Cross-Validation Error
+
+The validation error for fold \(k\) is:
+
+\[
+(CV\ Error)_k^{(\lambda)}
+=
+|T_k|^{-1}
+\sum_{(z,y)\in T_k}
+\left(y - \hat{f}_{-k}^{(\lambda)}(z)\right)^2
+\]
+
+This measures how well the model predicts observations **not used during training**.
+
+---
+
+### Step 5 — Average the Errors
+
+The final cross-validation error is obtained by averaging over all folds:
+
+\[
+CV(\lambda)
+=
+\frac{1}{K}
+\sum_{k=1}^{K}
+(CV\ Error)_k^{(\lambda)}
+\]
+
+---
+
+# Choosing the Best \( \lambda \)
+
+We repeat this process for many values of \( \lambda \).
+
+The optimal parameter is:
+
+\[
+\lambda^* = \arg\min_\lambda CV(\lambda)
+\]
+
+This value minimizes the **estimated prediction error**.
+
+---
+
+# Leave-One-Out Cross Validation (LOOCV)
+
+A special case of cross validation occurs when
+
+\[
+K = n
+\]
+
+where \(n\) is the number of observations.
+
+This method is called **Leave-One-Out Cross Validation (LOOCV)**.
+
+---
+
+## How LOOCV Works
+
+For each observation:
+
+1. Remove one observation from the dataset.
+2. Train the model on the remaining \(n-1\) observations.
+3. Predict the removed observation.
+4. Compute the prediction error.
+
+Repeat this for every observation.
+
+The LOOCV error is the average of all these errors.
+
+---
+
+# LOOCV Error Formula
+
+For squared error loss:
+
+\[
+CV(1)
+=
+\frac{1}{n}
+\sum_{i=1}^{n}
+\left(y_i - \hat{f}_{-i}(z_i)\right)^2
+\]
+
+where
+
+- \( \hat{f}_{-i} \) is the model fitted without observation \(i\).
+
+---
+
+# Smoother Matrix Representation
+
+For many linear models (including least squares), predictions can be written as:
+
+\[
+\hat{y} = S y
+\]
+
+where \(S\) is called the **smoother matrix**.
+
+---
+
+# Efficient LOOCV Formula
+
+Using the smoother matrix, the LOOCV error can be computed efficiently as:
+
+\[
+CV(1)
+=
+\frac{1}{n}
+\sum_{i=1}^{n}
+\left(
+\frac{y_i - \hat{f}(z_i)}{1 - S_{ii}}
+\right)^2
+\]
+
+This avoids fitting the model \(n\) separate times.
+
+---
+
+# Generalized Cross Validation (GCV)
+
+A convenient approximation to LOOCV is called **Generalized Cross Validation (GCV)**.
+
+The GCV error is defined as:
+
+\[
+GCV
+=
+\frac{1}{n}
+\sum_{i=1}^{n}
+\left(
+\frac{y_i - \hat{f}(z_i)}
+{1 - \frac{\text{tr}(S)}{n}}
+\right)^2
+\]
+
+---
+
+# Effective Degrees of Freedom
+
+The term
+
+\[
+\text{tr}(S)
+\]
+
+is the **trace of the smoother matrix**.
+
+This quantity represents the **effective number of parameters** used by the model.
+
+It is often referred to as the **effective degrees of freedom**.
+
+---
+
+# Why GCV is Useful
+
+Generalized cross validation is popular because:
+
+- it approximates LOOCV
+- it avoids repeatedly refitting the model
+- it is computationally efficient
+
+This makes it very useful for models such as:
+
+- ridge regression
+- smoothing splines
+- kernel regression
+
+---
+
+# Key Takeaways
+
+- Cross validation is used to select the best tuning parameter \( \lambda \).
+- **K-fold cross validation** is the most common method.
+- **Leave-One-Out CV** is a special case where each observation is used as validation once.
+- **Generalized Cross Validation (GCV)** provides a computational shortcut.
+- These methods help choose the model that **generalizes best to new data**.
+
