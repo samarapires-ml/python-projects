@@ -6561,3 +6561,750 @@ This makes it very useful for models such as:
 - **Generalized Cross Validation (GCV)** provides a computational shortcut.
 - These methods help choose the model that **generalizes best to new data**.
 
+
+## Logistic Regression
+
+Logistic regression is a statistical method used for **binary classification problems**, where the response variable can take only two values (such as 0/1 or yes/no). Instead of predicting a continuous outcome like linear regression, logistic regression models the **probability that an observation belongs to a particular class**. It does this by applying the **logistic (sigmoid) function** to a linear combination of predictors, ensuring that the predicted values lie between 0 and 1. The model can also be interpreted through the **log-odds (logit)** of the probability, which is expressed as a linear function of the predictors. Logistic regression is widely used in fields such as medicine, finance, and machine learning for tasks like disease prediction, credit risk assessment, and spam detection.
+
+## Qualitative Response
+
+In many prediction problems, the response variable \(Y\) is **qualitative (categorical)** rather than numerical.  
+This means that the outcome does not represent a quantity, but instead belongs to a **set of categories**.
+
+We denote the set of possible categories by
+
+\[
+C
+\]
+
+For example:
+
+\[
+\text{eye color} \in \{brown, blue, green\}
+\]
+
+Here, the response variable can only take one value from this set of categories.
+
+---
+
+# The Classification Problem
+
+Suppose we observe a **feature vector**
+
+\[
+X = (X_1, X_2, ..., X_p)
+\]
+
+which contains the predictor variables describing an observation.
+
+Examples of predictors could include:
+
+- age
+- medical measurements
+- transaction information
+- DNA sequence features
+
+We also have a **response variable**
+
+\[
+Y \in C
+\]
+
+which represents the category we want to predict.
+
+The goal of **classification** is to learn a function
+
+\[
+C(X)
+\]
+
+that takes the input features \(X\) and predicts the category of \(Y\).
+
+In other words,
+
+\[
+C(X) \in C
+\]
+
+This function is often called a **classifier** or **decision rule**.
+
+---
+
+# Learning the Classification Rule
+
+The classifier \(C(X)\) is learned from data.
+
+Given a dataset of observations
+
+\[
+(X_1, Y_1), (X_2, Y_2), ..., (X_n, Y_n)
+\]
+
+we attempt to learn the relationship between \(X\) and \(Y\).
+
+Once the model is trained, it can be used to predict the class for **new observations**.
+
+---
+
+# Why Probabilities Are Often More Useful
+
+Instead of simply predicting a class label, it is often more useful to estimate the **probability that an observation belongs to each category**.
+
+For example:
+
+\[
+P(Y = c \mid X)
+\]
+
+for each class \(c \in C\).
+
+This provides more information than a simple classification.
+
+For instance, a model might predict:
+
+| Outcome | Probability |
+|------|------|
+| Fraud | 0.85 |
+| Not Fraud | 0.15 |
+
+This tells us **how confident the model is**, not just the predicted class.
+
+---
+
+# Example: Fraud Detection
+
+Consider an insurance company trying to detect fraudulent claims.
+
+The system observes features such as:
+
+- claim amount
+- location
+- past claim history
+- time of claim
+
+Using these features \(X\), the model estimates
+
+\[
+P(\text{Fraud} \mid X)
+\]
+
+If the probability is high, the claim can be flagged for investigation.
+
+In this case, knowing the probability is more useful than a simple yes/no decision.
+
+---
+
+# Examples of Classification Problems
+
+## 1. Medical Diagnosis
+
+A patient arrives at the emergency room with a set of symptoms.
+
+Possible diagnoses might include:
+
+\[
+C = \{\text{Condition A}, \text{Condition B}, \text{Condition C}\}
+\]
+
+Using medical measurements and symptoms \(X\), the goal is to predict which condition the patient has.
+
+---
+
+## 2. Online Banking Fraud Detection
+
+An online banking system monitors transactions.
+
+Features might include:
+
+- user's IP address
+- transaction location
+- transaction amount
+- previous transaction history
+
+The classifier predicts whether a transaction is
+
+\[
+Y \in \{\text{Fraud}, \text{Not Fraud}\}
+\]
+
+---
+
+## 3. Genetics and Disease Research
+
+A biologist studies DNA sequences of patients with and without a disease.
+
+Features \(X\) might represent different **DNA mutations**.
+
+The task is to determine whether a mutation is
+
+\[
+Y \in \{\text{Disease-causing}, \text{Not disease-causing}\}
+\]
+
+This helps identify genetic risk factors.
+
+---
+
+# Connection to Logistic Regression
+
+Logistic regression is one of the most common models used for **classification problems**, especially when the response variable has **two categories**.
+
+Instead of predicting the class directly, logistic regression models the **probability of belonging to a class**.
+
+For example:
+
+\[
+P(Y = 1 \mid X)
+\]
+
+This probability can then be used to classify observations.
+
+---
+
+# Key Takeaways
+
+- A **qualitative response** means the output variable belongs to a set of categories.
+- The goal of classification is to learn a function \(C(X)\) that predicts the category of \(Y\).
+- Often we are interested in estimating **class probabilities** rather than just predicting the class.
+- Classification problems arise in many fields including medicine, finance, and genetics.
+- **Logistic regression** is one of the main statistical models used to solve these problems.
+
+## Credit Card Default Example
+
+This slide presents an example of a **binary classification problem** where the goal is to predict whether a customer will **default on their credit card payment**.
+
+The response variable is
+
+\[
+Y \in \{\text{Default = Yes}, \text{Default = No}\}
+\]
+
+Two predictor variables are shown:
+
+- **Balance** (credit card balance)
+- **Income**
+
+---
+
+## Scatter Plot (Balance vs Income)
+
+The left plot shows each individual customer.
+
+- **Blue points:** customers who **did not default**
+- **Orange points:** customers who **defaulted**
+
+Key observation:
+
+Customers with **higher credit card balances are much more likely to default**.  
+There is a clear concentration of orange points at higher balance levels.
+
+Income does not clearly separate the two groups.
+
+---
+
+## Balance vs Default (Boxplot)
+
+The middle plot compares balances between the two groups.
+
+Observation:
+
+Customers who **defaulted tend to have much higher balances** than those who did not.
+
+This suggests that **balance is a strong predictor of default**.
+
+---
+
+## Income vs Default (Boxplot)
+
+The right plot compares income for defaulters and non-defaulters.
+
+Observation:
+
+The income distributions overlap significantly, meaning **income alone is not a strong predictor** of default.
+
+---
+
+## Key Idea
+
+These plots show how predictors relate to a **binary outcome**.  
+Using logistic regression, we can model
+
+\[
+P(\text{Default} = 1 \mid \text{Balance}, \text{Income})
+\]
+
+which gives the **probability that a customer will default** based on their financial information.
+
+![Credit Card Default](figures-for-notes/credit-card-default.png)
+
+## Linear Regression for Classification
+
+Suppose we are trying to predict whether a customer will **default on a credit card**.  
+We can code the response variable as:
+
+\[
+Y =
+\begin{cases}
+1 & \text{if Default = Yes} \\
+0 & \text{if Default = No}
+\end{cases}
+\]
+
+A simple idea is to apply **linear regression** to predict \(Y\) using predictors \(X\), and then classify:
+
+- **Default = Yes** if \(\hat{Y} > 0.5\)
+- **Default = No** if \(\hat{Y} \le 0.5\)
+
+Since in the population
+
+\[
+E(Y|X=x) = P(Y=1|X=x)
+\]
+
+it might seem that linear regression is suitable for estimating probabilities.
+
+However, linear regression has a major issue: it can produce predicted values **less than 0 or greater than 1**, which are **not valid probabilities**.  
+Because of this limitation, **logistic regression is a better model for classification problems**.
+
+---
+
+## Why Not Use Linear Regression?
+
+Consider a medical example where we want to classify a patient based on symptoms.
+
+Possible conditions:
+
+- Stroke  
+- Drug overdose  
+- Epileptic seizure  
+
+If we tried to use linear regression, we might encode the outcomes numerically as:
+
+\[
+y =
+\begin{cases}
+1 & \text{stroke} \\
+2 & \text{drug overdose} \\
+3 & \text{epileptic seizure}
+\end{cases}
+\]
+
+But this creates a problem.
+
+By assigning numbers, we are implicitly assuming that:
+
+- the difference between **stroke (1)** and **drug overdose (2)**  
+- is the same as the difference between **drug overdose (2)** and **epileptic seizure (3)**
+
+This assumption does **not make sense**, because these conditions are simply different categories and do not have a natural numerical order or distance.
+
+---
+
+## Key Idea
+
+Linear regression treats the response variable as **numerical**, while classification problems involve **categorical outcomes**.
+
+Because of this:
+
+- Linear regression can produce invalid probability predictions
+- It imposes artificial numerical relationships between categories
+
+For classification problems, models such as **logistic regression** are more appropriate because they directly model **class probabilities**.
+
+## Credit Data Example — Linear vs Logistic Regression
+
+This slide compares how **linear regression** and **logistic regression** estimate the probability of credit card default.
+
+The goal is to model
+
+\[
+P(\text{Default} = 1 \mid \text{Balance})
+\]
+
+using **credit card balance** as the predictor.
+
+The orange marks represent the actual observations:
+
+- **0 → No default**
+- **1 → Default**
+
+---
+
+## Left Plot — Linear Regression
+
+The left figure shows the probability estimated using **linear regression**.
+
+Observation:
+
+- The fitted line increases with balance.
+- However, the model predicts probabilities **below 0 and above 1**.
+
+This is a problem because probabilities must always lie between **0 and 1**.
+
+Therefore, linear regression is **not appropriate for modeling probabilities** in classification problems.
+
+---
+
+## Right Plot — Logistic Regression
+
+The right figure shows the probability estimated using **logistic regression**.
+
+Observation:
+
+- The curve has an **S-shape (sigmoid)**.
+- The predicted probabilities are always between **0 and 1**.
+- The probability of default increases smoothly as balance increases.
+
+This behavior makes logistic regression **well suited for binary classification problems**.
+
+---
+
+## Key Idea
+
+- Linear regression can produce **invalid probability values**.
+- Logistic regression models probability using a **sigmoid function**, ensuring predictions remain between **0 and 1**.
+
+Thus, logistic regression provides a **more appropriate model for predicting default probabilities**.
+
+![Logistic Regression - Credit data example](figures-for-notes/lrcde.png)
+
+## Logistic Regression Model
+
+Logistic regression is one of the most widely used statistical models for **binary classification problems**. It was introduced by **Cox (1958)** and is commonly used to model the probability that an outcome belongs to a particular category.
+
+Let
+
+\[
+p(X) = P(Y=1 \mid X)
+\]
+
+represent the probability that the response variable equals 1 given the predictors \(X\).  
+For example, in the credit card default problem, this represents the **probability that a customer defaults given their balance**.
+
+---
+
+## Logistic Regression Probability Model
+
+Logistic regression models this probability using the **logistic (sigmoid) function**:
+
+\[
+p(X) =
+\frac{e^{\beta_0 + \beta_1 X}}
+{1 + e^{\beta_0 + \beta_1 X}}
+\]
+
+where:
+
+- \(X\) is the predictor variable (e.g., balance)
+- \(\beta_0\) is the intercept
+- \(\beta_1\) measures how strongly \(X\) affects the probability
+
+A key property of this function is that the predicted probability **always lies between 0 and 1**, no matter what values \(X\) or the coefficients take.
+
+---
+
+## Log-Odds (Logit) Transformation
+
+By rearranging the logistic function, we obtain
+
+\[
+\log\left(\frac{p(X)}{1-p(X)}\right)
+=
+\beta_0 + \beta_1 X
+\]
+
+The term
+
+\[
+\log\left(\frac{p(X)}{1-p(X)}\right)
+\]
+
+is called the **log-odds** or **logit**.
+
+This shows that logistic regression models the **log-odds of the event** as a **linear function of the predictors**.
+
+---
+
+## Key Idea
+
+- Logistic regression models **probabilities**, not the response directly.
+- The logistic function ensures predictions remain between **0 and 1**.
+- The model is linear in the **log-odds (logit)** of the probability.
+
+This makes logistic regression well suited for **classification problems such as predicting credit card default**.
+
+## Estimation in Logistic Regression
+
+In logistic regression, the model parameters \( \beta_0 \) and \( \beta_1 \) are estimated using **Maximum Likelihood Estimation (MLE)** rather than the least squares method used in linear regression.
+
+Let
+
+\[
+p(x_i) = P(Y=1 \mid X=x_i)
+\]
+
+represent the probability that observation \(i\) belongs to class 1 (for example, a customer **defaults**).
+
+The likelihood function represents the probability of observing the data that we actually have. It is written as
+
+\[
+l(\beta_0,\beta_1) =
+\prod_{i:y_i=1} p(x_i)
+\prod_{i:y_i=0} (1-p(x_i))
+\]
+
+This expression means:
+
+- For observations where \(y_i = 1\), the likelihood contribution is \(p(x_i)\).
+- For observations where \(y_i = 0\), the likelihood contribution is \(1 - p(x_i)\).
+
+The goal of maximum likelihood estimation is to choose the parameters \( \beta_0 \) and \( \beta_1 \) that **maximize this likelihood**, meaning we choose the parameter values that make the observed pattern of 0s and 1s in the data **most probable under the model**.
+
+Unlike linear regression, logistic regression does not have a simple closed-form solution, so numerical optimization algorithms are used to compute the estimates.
+
+---
+
+## Implementation in R
+
+Most statistical software can fit logistic regression models automatically.
+
+In **R**, we use the `glm()` function with a binomial family:
+
+glm.fit = glm(default ~ balance, data = defaultData, family = binomial)
+summary(glm.fit)
+
+## Here:
+
+glm() fits a generalized linear model
+
+family = binomial specifies that the response variable follows a binomial distribution, which corresponds to logistic regression.```
+
+Interpretation of the Output
+
+The output provides estimated coefficients for the model.
+
+## For example:
+
+Variable	Meaning
+Intercept	Baseline log-odds of default when predictors are zero
+Balance	Change in the log-odds of default for a one-unit increase in balance
+
+If the coefficient for balance is positive, it means that higher credit card balances increase the probability of default.
+
+Because logistic regression models log-odds, each coefficient describes how the predictors change the log of the odds of the event occurring.
+
+## Key Idea
+
+Logistic regression estimates its parameters using maximum likelihood, selecting the coefficients that make the observed outcomes most likely. This approach ensures that the model produces probabilities that best match the observed data while keeping predictions between 0 and 1, making it well suited for binary classification problems such as predicting credit card default.
+
+## Interpretation of Logistic Regression Coefficients
+
+Interpreting coefficients in logistic regression is slightly different from linear regression because the model predicts the **probability**
+
+\[
+P(Y=1 \mid X)
+\]
+
+rather than the response variable \(Y\) directly.
+
+In logistic regression, the coefficient \( \beta_1 \) describes how the predictor \(X\) affects the **log-odds** of the outcome.
+
+---
+
+### Case 1: \( \beta_1 = 0 \)
+
+If
+
+\[
+\beta_1 = 0
+\]
+
+then the predictor \(X\) has **no relationship** with the response variable \(Y\).
+
+This means the probability of \(Y=1\) does not depend on \(X\).
+
+---
+
+### Case 2: \( \beta_1 > 0 \)
+
+If
+
+\[
+\beta_1 > 0
+\]
+
+then as \(X\) increases, the **probability that \(Y=1\) increases**.
+
+For example, in the credit card default problem, a positive coefficient for **balance** means that customers with higher balances are more likely to default.
+
+---
+
+### Case 3: \( \beta_1 < 0 \)
+
+If
+
+\[
+\beta_1 < 0
+\]
+
+then as \(X\) increases, the **probability that \(Y=1\) decreases**.
+
+This means the predictor is negatively associated with the outcome.
+
+---
+
+### Important Note
+
+The effect of \(X\) on the probability is **not constant**, because the logistic model is nonlinear.  
+The amount by which the probability increases or decreases depends on where we are on the **logistic curve**.
+
+---
+
+## Key Idea
+
+The coefficient \( \beta_1 \) indicates the **direction of the relationship** between \(X\) and the probability of the outcome:
+
+- Positive coefficient → probability increases with \(X\)
+- Negative coefficient → probability decreases with \(X\)
+- Zero coefficient → no relationship
+
+However, the exact change in probability varies depending on the value of \(X\).
+
+## Hypothesis Testing in Logistic Regression
+
+After estimating the logistic regression model, we often want to test whether the predictors are **statistically significant**. In particular, we test whether the coefficients \( \beta_0 \) and \( \beta_1 \) are significantly different from zero.
+
+The typical hypothesis test is:
+
+\[
+H_0 : \beta_1 = 0
+\]
+
+\[
+H_a : \beta_1 \neq 0
+\]
+
+If \( \beta_1 = 0 \), it means that the predictor \(X\) has **no relationship** with the probability of the outcome.
+
+---
+
+## Test Statistic
+
+In logistic regression we use a **z-test** instead of a t-test (which is used in linear regression).  
+However, the interpretation of the **p-value** remains the same.
+
+The test statistic is computed as
+
+\[
+z = \frac{\hat{\beta}_1}{SE(\hat{\beta}_1)}
+\]
+
+where:
+
+- \( \hat{\beta}_1 \) is the estimated coefficient
+- \( SE(\hat{\beta}_1) \) is the standard error
+
+A large absolute value of \(z\) leads to a **small p-value**, indicating strong evidence against the null hypothesis.
+
+---
+
+## Example: Credit Card Default
+
+From the model output:
+
+| Variable | Estimate | Std. Error | z value | p-value |
+|--------|--------|--------|--------|--------|
+| Intercept | -10.65 | 0.361 | -29.49 | < 2e-16 |
+| Balance | 0.0055 | 0.00022 | 24.95 | < 2e-16 |
+
+The **p-value for balance is extremely small**, meaning we reject the null hypothesis.
+
+---
+
+## Interpretation
+
+Because the coefficient for **balance** is positive and statistically significant:
+
+- As **credit card balance increases**,  
+- the **probability of default also increases**.
+
+Thus, balance is a **strong predictor of credit card default**.
+
+---
+
+## Key Idea
+
+Hypothesis testing in logistic regression allows us to determine whether a predictor has a **significant effect on the probability of the outcome**. A very small p-value indicates strong evidence that the predictor is related to the response variable.
+
+## Prediction using Logistic Regression
+
+Once the logistic regression model is fitted, we can use it to **predict the probability of an event occurring**.  
+In our example, we want to estimate the **probability that a customer will default** based on their **credit card balance**.
+
+The logistic regression model predicts probability using the logistic function:
+
+\[
+\hat{p}(X) = \frac{e^{\hat{\beta}_0 + \hat{\beta}_1 X}}{1 + e^{\hat{\beta}_0 + \hat{\beta}_1 X}}
+\]
+
+where:
+
+- \(X\) = predictor variable (balance)
+- \(\hat{\beta}_0, \hat{\beta}_1\) = estimated model coefficients
+- \(\hat{p}(X)\) = predicted probability of default
+
+---
+
+## Example Predictions
+
+Using the estimated model:
+
+\[
+\hat{\beta}_0 = -10.5613, \quad \hat{\beta}_1 = 0.0055
+\]
+
+### Balance = \$1000
+
+\[
+\hat{p}(X) =
+\frac{e^{-10.5613 + 0.0055 \times 1000}}
+{1 + e^{-10.5613 + 0.0055 \times 1000}}
+\approx 0.006
+\]
+
+This means the **predicted probability of default is about 0.6%**, which is very low.
+
+---
+
+### Balance = \$2000
+
+\[
+\hat{p}(X) =
+\frac{e^{-10.5613 + 0.0055 \times 2000}}
+{1 + e^{-10.5613 + 0.0055 \times 2000}}
+\approx 0.586
+\]
+
+This corresponds to a **58.6% probability of default**, which is much higher.
+
+---
+
+## Key Insight
+
+Logistic regression allows us to **convert predictor values into probabilities**.  
+As the **balance increases**, the predicted **probability of default increases rapidly**, showing how sensitive default risk is to higher credit balances.
+
+---
+
+## R Code Example
+
+```r
+predict(glm.fit, list(balance = c(1000,2000)), type = "response")
+
+Output:
+
+0.00575   0.58577
+
+These values correspond to the predicted probabilities for balances of $1000 and $2000, respectively.
+
+
